@@ -161,7 +161,7 @@ function subStockView($param)
 					$room        = htmlspecialchars($row[6]);
 					$area        = htmlspecialchars($row[7]);
 					$station     = htmlspecialchars($row[8]);
-					$distance    = fnRankName(htmlspecialchars($row[19] - 1));
+					$distance    = fnRankName(htmlspecialchars($row[9] - 1));
 					$agent       = htmlspecialchars($row[10]);
 					$store       = htmlspecialchars($row[11]);
 					$cover       = htmlspecialchars($row[12]);
