@@ -29,17 +29,7 @@ function subStockView($param)
 				<tr>
 					<th>除外</th>
 					<td>
-						<?php
-						$check1 = '';
-						$check2 = '';
-						if ($param["del"] == '0') {
-							$check2 = "checked";
-						} else {
-							$check1 = "checked";
-						}
-						?>
-						<input type="radio" name="del" value="1" <?php print $check1; ?> /> 非除外
-						<input type="radio" name="del" value="0" <?php print $check2; ?> /> 除外
+						<input type="checkbox" name="sDel" value="0" <?php if ($param["sDel"] == 0) print ' checked="checked"' ?> />
 					</td>
 					<th>最寄駅</th>
 					<td><input type="text" name="sStation" value="<?php print $param["sStation"] ?>" size="30" /></td>
@@ -259,8 +249,18 @@ function subStockEditView($param)
 		<table border="0" cellpadding="5" cellspacing="1">
 			<tr>
 				<th>除外</th>
-				<td><input type="radio" name="del" value="1" checked /> 非除外
-					<input type="radio" name="del" value="0" /> 除外
+				<td>
+					<?php
+					$check1 = '';
+					$check2 = '';
+					if ($param["del"] == '0') {
+						$check2 = "checked";
+					} else {
+						$check1 = "checked";
+					}
+					?>
+					<input type="radio" name="del" value="1" <?php print $check1; ?> /> 非除外
+					<input type="radio" name="del" value="0" <?php print $check2; ?> /> 除外
 				</td>
 			</tr>
 			<tr>
