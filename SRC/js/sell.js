@@ -71,10 +71,23 @@ function fnSellEditCheck() {
 		alert('専有面積を入力してください');
 		return;
 	}
-	if (tmp.length > 6 || tmp.match(/[^0-9\.]+/)) {
+	// if (tmp.length > 6 || tmp.match(/[^0-9\.]+/)) {
+	// 	alert('専有面積は3桁以内（小数点以下2桁以内）の半角数字で入力してください');
+	// 	return;
+	// }
+
+	// 共有されてる修正スクリプト
+	// if (tmp.length > 0 && !tmp.match(/^([0-9]{1,3})(\.[0-9]{1,2})?$/)) {
+	// 	alert('専有面積は3桁以内（小数点以下2桁以内）の半角数字で入力してください');
+	// 	return;
+	// }
+
+	if (tmp.length > 0 && !tmp.match(/^([0-9]{1,3})(\.[0-9]{1,2})?$/)) {
 		alert('専有面積は3桁以内（小数点以下2桁以内）の半角数字で入力してください');
 		return;
 	}
+	// 小数点以下がない場合、.00を追加
+	tmp = parseFloat(tmp).toFixed(2);
 
 	tmp = form.seller.value;
 	if (tmp.length == 0) {
