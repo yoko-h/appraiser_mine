@@ -37,7 +37,8 @@ function fnSellEditCheck() {
 	}
 
 	tmp = form.foot.value;
-	if (tmp.length == 0) {
+	// if (tmp.length == 0) {
+	if (tmp.length == 0 || tmp === "0") {
 		alert('徒歩を入力してください');
 		return;
 	}
@@ -57,7 +58,8 @@ function fnSellEditCheck() {
 	}
 
 	tmp = form.floor.value;
-	if (tmp.length == 0) {
+	// if (tmp.length == 0) {
+	if (tmp.length == 0 || tmp === "0") {
 		alert('階数を入力してください');
 		return;
 	}
@@ -66,11 +68,11 @@ function fnSellEditCheck() {
 		return;
 	}
 
-	tmp = form.area.value;
-	if (tmp.length == 0) {
-		alert('専有面積を入力してください');
-		return;
-	}
+	// tmp = form.area.value;
+	// if (tmp.length == 0) {
+	// 	alert('専有面積を入力してください');
+	// 	return;
+	// }
 	// if (tmp.length > 6 || tmp.match(/[^0-9\.]+/)) {
 	// 	alert('専有面積は3桁以内（小数点以下2桁以内）の半角数字で入力してください');
 	// 	return;
@@ -82,6 +84,11 @@ function fnSellEditCheck() {
 	// 	return;
 	// }
 
+	tmp = form.area.value;
+	if (tmp.length == 0 || tmp === "0") {
+		alert('専有面積を入力してください');
+		return;
+	}
 	if (tmp.length > 0 && !tmp.match(/^([0-9]{1,3})(\.[0-9]{1,2})?$/)) {
 		alert('専有面積は3桁以内（小数点以下2桁以内）の半角数字で入力してください');
 		return;
@@ -100,7 +107,8 @@ function fnSellEditCheck() {
 	}
 
 	tmp = form.price.value;
-	if (tmp.length == 0) {
+	// if (tmp.length == 0) {
+	if (tmp.length == 0 || tmp === "0") {
 		alert('価格を入力してください');
 		return;
 	}
