@@ -86,7 +86,7 @@ function subArticle()
 		return;
 	}
 	$sql = fnSqlArticleList(0, $sDel, $sArticle, $sRoom, $sKeyPlace, $sArticleNote, $sKeyBox, $sDrawing, $sSellCharge, $sPage, $orderBy, $orderTo);
-	$res = mysqli_query($sql);
+	$res = mysqli_query($conn, $sql);
 	$row = mysqli_fetch_array($res);
 
 	$count = $row[0];
