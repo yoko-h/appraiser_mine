@@ -66,7 +66,7 @@ function fnGuideMove(muki, articleNo) {
 		// 名称の取得
 		var articleName = $(obj.children()[0]).text();
 		var articleRoom = $(obj.children()[1]).text();
-		var articleKey = $(obj.children()[2]).text();
+		var articleKey = $(obj.children()[2]).html();
 
 		// 登録リストに保存(右側に移動)
 		tags = "<tr id=\"r" + articleNo + "\">";
@@ -86,7 +86,7 @@ function fnGuideMove(muki, articleNo) {
 		tags += "<td>" + articleRoom + "</td>";
 
 		// 鍵情報の作成
-		tags += "<td>" + articleKey;
+		tags += "<td>" + articleKey + "</td>";
 		tags += "</tr>";
 
 		// 登録側に追加
@@ -102,10 +102,10 @@ function fnGuideMove(muki, articleNo) {
 		tags = "<tr id=\"s" + articleNo + "\">";
 
 		// 物件名の作成
-		tags += "<th>" + $(obj.children()[1]).text() + "</th>";
+		tags += "<td>" + $(obj.children()[1]).html() + "</td>";
 
 		// 部屋番号の作成
-		tags += "<td>" + $(obj.children()[2]).text() + "</td>";
+		// tags += "<td>" + $(obj.children()[2]).text() + "</td>";
 		tags += "<td>" + $(obj.children()[2]).html() + "</td>";
 
 		// 鍵情報の作成
@@ -123,10 +123,10 @@ function fnGuideMove(muki, articleNo) {
 	}
 
 	// 色の再設定
-	$("#search tr").filter(":odd").find("td").attr("class", "list_td1");
+	$("#search tr").filter(":odd").find("td").attr("class", "list_td0");
 	$("#search tr").filter(":even").find("td").attr("class", "list_td1");
-	$("#regist tr").filter("odd").find(".td").attr("class", "list_td0");
-	$("#regist tr").filter("even").find(".td").attr("class", "list_td1");
+	$("#regist tr").filter(":odd").find("td").attr("class", "list_td0");
+	$("#regist tr").filter(":even").find("td").attr("class", "list_td1");
 }
 
 
