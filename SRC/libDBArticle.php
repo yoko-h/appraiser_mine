@@ -75,6 +75,7 @@ function fnSqlArticleUpdate($articleNo, $article, $room, $keyPlace, $address, $a
 	$sql .= ",KEYBOX = '$keyBox'";
 	$sql .= ",DRAWING = '$drawing'";
 	$sql .= ",SELLCHARGE = '$sellCharge'";
+	$sql .= ",UPDT = CURRENT_TIMESTAMP";   //←追加
 	$sql .= ",DEL = '$del'";
 	$sql .= " WHERE ARTICLENO = $articleNo";
 
