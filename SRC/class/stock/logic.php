@@ -5,28 +5,28 @@
 //
 function subStock()
 {
-    $param = getStockParam();
+  $param = getStockParam();
 
-    if ($_REQUEST['act'] == 'guide') {
-        // 案内日の開始日を1ヶ月前に設定
-        $param["sGuideDTFrom"] = date('Y/m/d', mktime(0, 0, 0, date('m') - 1, date('d'), date('Y')));
-    }
+  if ($_REQUEST['act'] == 'guide') {
+    // 案内日の開始日を1ヶ月前に設定
+    $param["sGuideDTFrom"] = date('Y/m/d', mktime(0, 0, 0, date('m') - 1, date('d'), date('Y')));
+  }
 
-    if ($param["sDel"] == '') {
-        $param["sDel"] = 1;
-    }
+  if ($param["sDel"] == '') {
+    $param["sDel"] = 1;
+  }
 
-    if (! $param["sPage"]) {
-        $param["sPage"] = 1;
-    }
+  if (! $param["sPage"]) {
+    $param["sPage"] = 1;
+  }
 
-    if (! $param["orderBy"]) {
-        $param["orderBy"] = 'STOCKNO';
-        $param["orderTo"] = 'DESC';
-    }
+  if (! $param["orderBy"]) {
+    $param["orderBy"] = 'STOCKNO';
+    $param["orderTo"] = 'DESC';
+  }
 
-    subMenu();
-    subStockView($param);
+  subMenu();
+  subStockView($param);
 }
 
 //
@@ -34,42 +34,42 @@ function subStock()
 //
 function subStockEdit()
 {
-    $param = getStockParam();
+  $param = getStockParam();
 
-    $param["stockNo"] = $_REQUEST['stockNo'];
+  $param["stockNo"] = $_REQUEST['stockNo'];
 
-    if ($param["stockNo"]) {
-        $sql = fnSqlStockEdit($param["stockNo"]);
-        $res = mysqli_query($param["conn"], $sql);
-        $row = mysqli_fetch_array($res);
+  if ($param["stockNo"]) {
+    $sql = fnSqlStockEdit($param["stockNo"]);
+    $res = mysqli_query($param["conn"], $sql);
+    $row = mysqli_fetch_array($res);
 
-        $param["charge"] = htmlspecialchars($row[0]);
-        $param["rank"] = htmlspecialchars($row[1]);
-        $param["article"] = htmlspecialchars($row[2]);
-        $param["articleFuri"] = htmlspecialchars($row[3]);
-        $param["room"] = htmlspecialchars($row[4]);
-        $param["area"] = htmlspecialchars($row[5]);
-        $param["station"] = htmlspecialchars($row[6]);
-        $param["distance"] = htmlspecialchars($row[7]);
-        $param["agent"] = htmlspecialchars($row[8]);
-        $param["store"] = htmlspecialchars($row[9]);
-        $param["cover"] = htmlspecialchars($row[10]);
-        $param["visitDT"] = htmlspecialchars($row[11]);
-        $param["deskPrice"] = htmlspecialchars($row[12]);
-        $param["vendorPrice"] = htmlspecialchars($row[13]);
-        $param["note"] = htmlspecialchars($row[14]);
-        $param["how"] = htmlspecialchars($row[15]);
-        $param["del"] = htmlspecialchars($row[16]);
+    $param["charge"] = htmlspecialchars($row[0]);
+    $param["rank"] = htmlspecialchars($row[1]);
+    $param["article"] = htmlspecialchars($row[2]);
+    $param["articleFuri"] = htmlspecialchars($row[3]);
+    $param["room"] = htmlspecialchars($row[4]);
+    $param["area"] = htmlspecialchars($row[5]);
+    $param["station"] = htmlspecialchars($row[6]);
+    $param["distance"] = htmlspecialchars($row[7]);
+    $param["agent"] = htmlspecialchars($row[8]);
+    $param["store"] = htmlspecialchars($row[9]);
+    $param["cover"] = htmlspecialchars($row[10]);
+    $param["visitDT"] = htmlspecialchars($row[11]);
+    $param["deskPrice"] = htmlspecialchars($row[12]);
+    $param["vendorPrice"] = htmlspecialchars($row[13]);
+    $param["note"] = htmlspecialchars($row[14]);
+    $param["how"] = htmlspecialchars($row[15]);
+    $param["del"] = htmlspecialchars($row[16]);
 
-        $param["purpose"] = '更新';
-        $param["btnImage"] = 'btn_load.png';
-    } else {
-        $param["purpose"] = '登録';
-        $param["btnImage"] = 'btn_enter.png';
-    }
+    $param["purpose"] = '更新';
+    $param["btnImage"] = 'btn_load.png';
+  } else {
+    $param["purpose"] = '登録';
+    $param["btnImage"] = 'btn_enter.png';
+  }
 
-    subMenu();
-    subStockEditView($param);
+  subMenu();
+  subStockEditView($param);
 }
 
 //
@@ -77,60 +77,66 @@ function subStockEdit()
 //
 function subStockEditComplete()
 {
-    $conn = fnDbConnect();
+  $conn = fnDbConnect();
 
-    $param["sDel"] = htmlspecialchars($_REQUEST['sDel']);
-    $param["sInsDTFrom"] = htmlspecialchars($_REQUEST['sInsDTFrom']);
-    $param["sInsDTTo"] = htmlspecialchars($_REQUEST['sInsDTTo']);
-    $param["sCharge"] = htmlspecialchars($_REQUEST['sCharge']);
-    $param["sRank"] = $_REQUEST['sRank'];
-    $param["sArticle"] = htmlspecialchars($_REQUEST['sArticle']);
-    $param["sArticleFuri"] = htmlspecialchars($_REQUEST['sArticleFuri']);
-    $param["sAreaFrom"] = htmlspecialchars($_REQUEST['sAreaFrom']);
-    $param["sAreaTo"] = htmlspecialchars($_REQUEST['sAreaTo']);
-    $param["sStation"] = htmlspecialchars($_REQUEST['sStation']);
-    $param["sDistance"] = $_REQUEST['sDistance'];
-    $param["sAgent"] = htmlspecialchars($_REQUEST['sAgent']);
-    $param["sStore"] = htmlspecialchars($_REQUEST['sStore']);
-    $param["sCover"] = htmlspecialchars($_REQUEST['sCover']);
-    $param["sVisitDTFrom"] = htmlspecialchars($_REQUEST['sVisitDTFrom']);
-    $param["sVisitDTTo"] = htmlspecialchars($_REQUEST['sVisitDTTo']);
-    $param["sHow"] = $_REQUEST['sHow'];
+  $param["sDel"] = htmlspecialchars($_REQUEST['sDel']);
+  $param["sInsDTFrom"] = htmlspecialchars($_REQUEST['sInsDTFrom']);
+  $param["sInsDTTo"] = htmlspecialchars($_REQUEST['sInsDTTo']);
+  $param["sCharge"] = htmlspecialchars($_REQUEST['sCharge']);
+  $param["sRank"] = $_REQUEST['sRank'];
+  $param["sArticle"] = htmlspecialchars($_REQUEST['sArticle']);
+  $param["sArticleFuri"] = htmlspecialchars($_REQUEST['sArticleFuri']);
+  $param["sAreaFrom"] = htmlspecialchars($_REQUEST['sAreaFrom']);
+  $param["sAreaTo"] = htmlspecialchars($_REQUEST['sAreaTo']);
+  $param["sStation"] = htmlspecialchars($_REQUEST['sStation']);
+  $param["sDistance"] = $_REQUEST['sDistance'];
+  $param["sAgent"] = htmlspecialchars($_REQUEST['sAgent']);
+  $param["sStore"] = htmlspecialchars($_REQUEST['sStore']);
+  $param["sCover"] = htmlspecialchars($_REQUEST['sCover']);
+  $param["sVisitDTFrom"] = htmlspecialchars($_REQUEST['sVisitDTFrom']);
+  $param["sVisitDTTo"] = htmlspecialchars($_REQUEST['sVisitDTTo']);
+  $param["sHow"] = $_REQUEST['sHow'];
 
-    $param["orderBy"] = $_REQUEST['orderBy'];
-    $param["orderTo"] = $_REQUEST['orderTo'];
-    $param["sPage"] = $_REQUEST['sPage'];
+  $param["orderBy"] = $_REQUEST['orderBy'];
+  $param["orderTo"] = $_REQUEST['orderTo'];
+  $param["sPage"] = $_REQUEST['sPage'];
 
-    $param["stockNo"] = mysqli_real_escape_string($conn, $_REQUEST['stockNo']);
-    $param["charge"] = mysqli_real_escape_string($conn, $_REQUEST['charge']);
-    $param["rank"] = mysqli_real_escape_string($conn, $_REQUEST['rank']);
-    $param["article"] = mysqli_real_escape_string($conn, $_REQUEST['article']);
-    $param["articleFuri"] = mysqli_real_escape_string($conn, $_REQUEST['articleFuri']);
-    $param["room"] = mysqli_real_escape_string($conn, $_REQUEST['room']);
-    $param["area"] = mysqli_real_escape_string($conn, $_REQUEST['area']);
-    $param["station"] = mysqli_real_escape_string($conn, $_REQUEST['station']);
-    $param["distance"] = mysqli_real_escape_string($conn, $_REQUEST['distance']);
-    $param["agent"] = mysqli_real_escape_string($conn, $_REQUEST['agent']);
-    $param["store"] = mysqli_real_escape_string($conn, $_REQUEST['store']);
-    $param["cover"] = mysqli_real_escape_string($conn, $_REQUEST['cover']);
-    $param["visitDT"] = mysqli_real_escape_string($conn, $_REQUEST['visitDT']);
-    $param["deskPrice"] = mysqli_real_escape_string($conn, $_REQUEST['deskPrice']);
-    $param["vendorPrice"] = mysqli_real_escape_string($conn, $_REQUEST['vendorPrice']);
-    $param["note"] = mysqli_real_escape_string($conn, $_REQUEST['note']);
-    $param["how"] = mysqli_real_escape_string($conn, $_REQUEST['how']);
-    $param["del"] = mysqli_real_escape_string($conn, $_REQUEST['del']);
+  $param["stockNo"] = mysqli_real_escape_string($conn, $_REQUEST['stockNo']);
+  $param["charge"] = mysqli_real_escape_string($conn, $_REQUEST['charge']);
+  $param["rank"] = mysqli_real_escape_string($conn, $_REQUEST['rank']);
+  $param["article"] = mysqli_real_escape_string($conn, $_REQUEST['article']);
+  $param["articleFuri"] = mysqli_real_escape_string($conn, $_REQUEST['articleFuri']);
+  $param["room"] = mysqli_real_escape_string($conn, $_REQUEST['room']);
+  $param["area"] = mysqli_real_escape_string($conn, $_REQUEST['area']);
+  $param["station"] = mysqli_real_escape_string($conn, $_REQUEST['station']);
+  $param["distance"] = mysqli_real_escape_string($conn, $_REQUEST['distance']);
+  $param["agent"] = mysqli_real_escape_string($conn, $_REQUEST['agent']);
+  $param["store"] = mysqli_real_escape_string($conn, $_REQUEST['store']);
+  $param["cover"] = mysqli_real_escape_string($conn, $_REQUEST['cover']);
+  $param["visitDT"] = mysqli_real_escape_string($conn, $_REQUEST['visitDT']);
+  $param["deskPrice"] = mysqli_real_escape_string($conn, $_REQUEST['deskPrice']);
+  $param["vendorPrice"] = mysqli_real_escape_string($conn, $_REQUEST['vendorPrice']);
+  $param["note"] = mysqli_real_escape_string($conn, $_REQUEST['note']);
+  $param["how"] = mysqli_real_escape_string($conn, $_REQUEST['how']);
+  $param["del"] = mysqli_real_escape_string($conn, $_REQUEST['del']);
 
-    if ($param["stockNo"]) {
-        $sql = fnSqlStockUpdate($param);
-        $res = mysqli_query($conn, $sql);
-    } else {
-        $param["stockNo"] = fnNextNo('STOCK');
-        $sql = fnSqlStockInsert($param);
-        $res = mysqli_query($conn, $sql);
-    }
+  // if ($param["stockNo"]) {
+  //   $sql = fnSqlStockUpdate($param);
+  //   $res = mysqli_query($conn, $sql);
+  // } else {
+  //   $param["stockNo"] = fnNextNo('STOCK');
+  //   $sql = fnSqlStockInsert($param);
+  //   $res = mysqli_query($conn, $sql);
+  // }
+  if ($param["stockNo"]) {
+    $res = fnSqlStockUpdate($param);
+  } else {
+    $param["stockNo"] = fnNextNo('STOCK');
+    $res = fnSqlStockInsert($param);
+  }
 
-    $_REQUEST['act'] = 'stockSearch';
-    subStock();
+  $_REQUEST['act'] = 'stockSearch';
+  subStock();
 }
 
 //
@@ -138,15 +144,15 @@ function subStockEditComplete()
 //
 function subStockDelete()
 {
-    $conn = fnDbConnect();
+  $conn = fnDbConnect();
 
-    $param["stockNo"] = $_REQUEST['stockNo'];
+  $param["stockNo"] = $_REQUEST['stockNo'];
 
-    $sql = fnSqlStockDelete($param["stockNo"]);
-    $res = mysqli_query($conn, $sql);
+  $sql = fnSqlStockDelete($param["stockNo"]);
+  $res = mysqli_query($conn, $sql);
 
-    $_REQUEST['act'] = 'stockSearch';
-    subStock();
+  $_REQUEST['act'] = 'stockSearch';
+  subStock();
 }
 
 //
@@ -154,17 +160,17 @@ function subStockDelete()
 //
 function subStockListDelete()
 {
-    $conn = fnDbConnect();
+  $conn = fnDbConnect();
 
-    $delStockList = $_REQUEST['delStockList'];
-    $delStockListArray = array();
+  $delStockList = $_REQUEST['delStockList'];
+  $delStockListArray = array();
 
-    $delStockListArray = explode(",", $delStockList);
-    $sql = fnSqlStockListDelete($delStockListArray);
-    $res = mysqli_query($conn, $sql);
+  $delStockListArray = explode(",", $delStockList);
+  $sql = fnSqlStockListDelete($delStockListArray);
+  $res = mysqli_query($conn, $sql);
 
-    $_REQUEST['act'] = 'stockSearch';
-    subStock();
+  $_REQUEST['act'] = 'stockSearch';
+  subStock();
 }
 
 //
@@ -172,33 +178,33 @@ function subStockListDelete()
 //
 function getStockParam()
 {
-    $param = array();
+  $param = array();
 
-    // DB接続
-    $param["conn"] = fnDbConnect();
+  // DB接続
+  $param["conn"] = fnDbConnect();
 
-    // 検索情報
-    $param["sDel"] = htmlspecialchars($_REQUEST['sDel']);
-    $param["sInsDTFrom"] = htmlspecialchars($_REQUEST['sInsDTFrom']);
-    $param["sInsDTTo"] = htmlspecialchars($_REQUEST['sInsDTTo']);
-    $param["sCharge"] = htmlspecialchars($_REQUEST['sCharge']);
-    $param["sRank"] = $_REQUEST['sRank'];
-    $param["sArticle"] = htmlspecialchars($_REQUEST['sArticle']);
-    $param["sArticleFuri"] = htmlspecialchars($_REQUEST['sArticleFuri']);
-    $param["sAreaFrom"] = htmlspecialchars($_REQUEST['sAreaFrom']);
-    $param["sAreaTo"] = htmlspecialchars($_REQUEST['sAreaTo']);
-    $param["sStation"] = htmlspecialchars($_REQUEST['sStation']);
-    $param["sDistance"] = $_REQUEST['sDistance'];
-    $param["sAgent"] = htmlspecialchars($_REQUEST['sAgent']);
-    $param["sStore"] = htmlspecialchars($_REQUEST['sStore']);
-    $param["sCover"] = htmlspecialchars($_REQUEST['sCover']);
-    $param["sVisitDTFrom"] = htmlspecialchars($_REQUEST['sVisitDTFrom']);
-    $param["sVisitDTTo"] = htmlspecialchars($_REQUEST['sVisitDTTo']);
-    $param["sHow"] = $_REQUEST['sHow'];
+  // 検索情報
+  $param["sDel"] = htmlspecialchars($_REQUEST['sDel'] ?? '');
+  $param["sInsDTFrom"] = htmlspecialchars($_REQUEST['sInsDTFrom'] ?? '');
+  $param["sInsDTTo"] = htmlspecialchars($_REQUEST['sInsDTTo'] ?? '');
+  $param["sCharge"] = htmlspecialchars($_REQUEST['sCharge'] ?? '');
+  $param["sRank"] = $_REQUEST['sRank'] ?? null;
+  $param["sArticle"] = htmlspecialchars($_REQUEST['sArticle'] ?? '');
+  $param["sArticleFuri"] = htmlspecialchars($_REQUEST['sArticleFuri'] ?? '');
+  $param["sAreaFrom"] = htmlspecialchars($_REQUEST['sAreaFrom'] ?? '');
+  $param["sAreaTo"] = htmlspecialchars($_REQUEST['sAreaTo'] ?? '');
+  $param["sStation"] = htmlspecialchars($_REQUEST['sStation'] ?? '');
+  $param["sDistance"] = $_REQUEST['sDistance'] ?? null;
+  $param["sAgent"] = htmlspecialchars($_REQUEST['sAgent'] ?? '');
+  $param["sStore"] = htmlspecialchars($_REQUEST['sStore'] ?? '');
+  $param["sCover"] = htmlspecialchars($_REQUEST['sCover'] ?? '');
+  $param["sVisitDTFrom"] = htmlspecialchars($_REQUEST['sVisitDTFrom'] ?? '');
+  $param["sVisitDTTo"] = htmlspecialchars($_REQUEST['sVisitDTTo'] ?? '');
+  $param["sHow"] = $_REQUEST['sHow'] ?? null;
 
-    $param["orderBy"] = $_REQUEST['orderBy'];
-    $param["orderTo"] = $_REQUEST['orderTo'];
-    $param["sPage"] = $_REQUEST['sPage'];
+  $param["orderBy"] = $_REQUEST['orderBy'] ?? null;
+  $param["orderTo"] = $_REQUEST['orderTo'] ?? null;
+  $param["sPage"] = $_REQUEST['sPage'] ?? null;
 
-    return $param;
+  return $param;
 }
