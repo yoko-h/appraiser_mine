@@ -90,9 +90,9 @@ function subGuideShowKey()
 function subGuideChoice()
 {
   $param = getGuideParam();
-  $param["cDel"] = htmlspecialchars($_REQUEST['cDel']);
-  $param["cArticle"] = htmlspecialchars($_REQUEST['cArticle']);
-  $param["cRoom"] = htmlspecialchars($_REQUEST['cRoom']);
+  $param["cDel"] = htmlspecialchars($_REQUEST['cDel'] ?? '');
+  $param["cArticle"] = htmlspecialchars($_REQUEST['cArticle'] ?? '');
+  $param["cRoom"] = htmlspecialchars($_REQUEST['cRoom'] ?? '');
 
   if ($param["cDel"] == '') {
     $param["cDel"] = 1;
