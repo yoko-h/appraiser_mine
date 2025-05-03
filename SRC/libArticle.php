@@ -108,7 +108,7 @@ function subArticle()
       </tr>
       <?php
       $sql = fnSqlArticleList(1, $sDel, $sArticle, $sRoom, $sKeyPlace, $sArticleNote, $sKeyBox, $sDrawing, $sSellCharge, $sPage, $orderBy, $orderTo);
-
+      echo "実行されるSQL: " . $sql;
       $res = mysqli_query($conn, $sql);
       $i = 0;
       while ($row = mysqli_fetch_array($res)) {
@@ -150,14 +150,14 @@ function subArticleEdit()
 {
   $conn = fnDbConnect();
 
-  $sDel         = htmlspecialchars($_REQUEST['sDel']);
+  $sDel         = htmlspecialchars($_REQUEST['sDel'] ?? '');
   $sArticle     = htmlspecialchars($_REQUEST['sArticle']);
   $sRoom        = htmlspecialchars($_REQUEST['sRoom']);
   $sKeyPlace    = htmlspecialchars($_REQUEST['sKeyPlace']);
   $sArticleNote = htmlspecialchars($_REQUEST['sArticleNote']);
   $sKeyBox      = htmlspecialchars($_REQUEST['sKeyBox']);
-  $sDueDTFrom   = htmlspecialchars($_REQUEST['sDueDTFrom']);
-  $sDueDTTo     = htmlspecialchars($_REQUEST['sDueDTTo']);
+  $sDueDTFrom   = htmlspecialchars($_REQUEST['sDueDTFrom'] ?? '');
+  $sDueDTTo     = htmlspecialchars($_REQUEST['sDueDTTo'] ?? '');
   $sSellCharge  = htmlspecialchars($_REQUEST['sSellCharge']);
 
   $orderBy = $_REQUEST['orderBy'];
@@ -214,41 +214,51 @@ function subArticleEdit()
       <tr>
         <th>除外</th>
         <td>
-          <input type="radio" name="del" value="1" checked="checked" /> 非除外
-          <input type="radio" name="del" value="0" <?php if ($del == '0') print ' checked="checked"' ?> /> 除外
+          <?php
+          $check1 = '';
+          $check2 = '';
+          // if ($param["del"] == '0') {
+          if (($param["del"] ?? '') == '0') {
+            $check2 = "checked";
+          } else {
+            $check1 = "checked";
+          }
+          ?>
+          <input type="radio" name="del" value="1" <?php print $check1; ?> /> 非除外
+          <input type="radio" name="del" value="0" <?php print $check2; ?> /> 除外
         </td>
       </tr>
       <tr>
         <th>物件名<span class="red">（必須）</span></th>
-        <td><input type="text" name="article" value="<?php print $article ?>" /></td>
+        <td><input type="text" name="article" value="<?php print isset($article) ? $article : ''; ?>" /></td>
       </tr>
       <tr>
         <th>部屋番号</th>
-        <td><input type="text" name="room" value="<?php print $room ?>" /></td>
+        <td><input type="text" name="room" value="<?php print isset($room) ? $room : ''; ?>" /></td>
       </tr>
       <tr>
         <th>鍵場所</th>
-        <td><textarea name="keyPlace" cols="50" rows="10"><?php print $keyPlace ?></textarea></td>
+        <td><textarea name="keyPlace" cols="50" rows="10"><?php print isset($keyPlace) ? $keyPlace : ''; ?></textarea></td>
       </tr>
       <tr>
         <th>住所</th>
-        <td><input type="text" name="address" value="<?php print $address ?>" /></td>
+        <td><input type="text" name="address" value="<?php print isset($address) ? $address : ''; ?>" /></td>
       </tr>
       <tr>
         <th>備考</th>
-        <td><textarea name="articleNote" cols="50" rows="10"><?php print $articleNote ?></textarea></td>
+        <td><textarea name="articleNote" cols="50" rows="10"><?php print isset($articleNote) ? $articleNote : ''; ?></textarea></td>
       </tr>
       <tr>
         <th>キーBox番号</th>
-        <td><input type="text" name="keyBox" value="<?php print $keyBox ?>" /></td>
+        <td><input type="text" name="keyBox" value="<?php print isset($keyBox) ? $keyBox : ''; ?>" /></td>
       </tr>
       <tr>
         <th>3Dパース</th>
-        <td><input type="text" name="drawing" value="<?php print $drawing ?>" /></td>
+        <td><input type="text" name="drawing" value="<?php print isset($drawing) ? $drawing : ''; ?>" /></td>
       </tr>
       <tr>
         <th>営業担当者</th>
-        <td><input type="text" name="sellCharge" value="<?php print $sellCharge ?>" /></td>
+        <td><input type="text" name="sellCharge" value="<?php print isset($sellCharge) ? $sellCharge : ''; ?>" /></td>
       </tr>
     </table>
 
