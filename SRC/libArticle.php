@@ -322,7 +322,13 @@ function subArticleEditComplete()
   }
 
   $_REQUEST['act'] = 'articleSearch';
-  subArticle();
+  // subArticle(); // ← 直接一覧表示関数を呼ぶのではなく
+
+  $orderBy = $_REQUEST['orderBy'] ?? 'ARTICLENO'; // デフォルト値も考慮
+  $orderTo = $_REQUEST['orderTo'] ?? 'DESC';    // デフォルト値も考慮
+
+  header("Location: index.php?act=articleSearch&orderBy=" . urlencode($orderBy) . "&orderTo=" . urlencode($orderTo));
+  exit();
 }
 
 
