@@ -44,7 +44,7 @@ function subArticle()
     <input type="hidden" name="sPage" value="<?php print $sPage ?>" />
     <input type="hidden" name="articleNo" />
     <input type="hidden" name="sName" />
-    <!-- <input type="hidden" name="sRoom" /> -->
+    <input type="hidden" name="sRoom" />
 
     <a href="javascript:form.act.value='articleEdit';form.submit();"><img src="./images/btn_enter.png"></a>
 
@@ -108,7 +108,6 @@ function subArticle()
       </tr>
       <?php
       $sql = fnSqlArticleList(1, $sDel, $sArticle, $sRoom, $sKeyPlace, $sArticleNote, $sKeyBox, $sDrawing, $sSellCharge, $sPage, $orderBy, $orderTo);
-      echo "実行されるSQL: " . $sql;
       $res = mysqli_query($conn, $sql);
       $i = 0;
       while ($row = mysqli_fetch_array($res)) {
@@ -295,16 +294,19 @@ function subArticleEditComplete()
   $orderTo = $_REQUEST['orderTo'];
   $sPage   = $_REQUEST['sPage'];
 
-  $articleNo   = mysqli_real_escape_string($conn, $_REQUEST['articleNo']);
-  $article     = mysqli_real_escape_string($conn, $_REQUEST['article']);
-  $room        = mysqli_real_escape_string($conn, $_REQUEST['room']);
-  $keyPlace    = mysqli_real_escape_string($conn, $_REQUEST['keyPlace']);
-  $address     = mysqli_real_escape_string($conn, $_REQUEST['address']);
-  $articleNote = mysqli_real_escape_string($conn, $_REQUEST['articleNote']);
-  $keyBox      = mysqli_real_escape_string($conn, $_REQUEST['keyBox']);
-  $drawing     = mysqli_real_escape_string($conn, $_REQUEST['drawing']);
-  $sellCharge  = mysqli_real_escape_string($conn, $_REQUEST['sellCharge']);
-  $del         = mysqli_real_escape_string($conn, $_REQUEST['del']);
+  $articleNo   = mysqli_real_escape_string($conn, $_REQUEST['articleNo'] ?? '');
+  $article     = mysqli_real_escape_string($conn, $_REQUEST['article'] ?? '');
+  $room        = mysqli_real_escape_string($conn, $_REQUEST['room'] ?? '');
+  $keyPlace    = mysqli_real_escape_string($conn, $_REQUEST['keyPlace'] ?? '');
+  $address     = mysqli_real_escape_string($conn, $_REQUEST['address'] ?? '');
+  $articleNote = mysqli_real_escape_string($conn, $_REQUEST['articleNote'] ?? '');
+  $keyBox      = mysqli_real_escape_string($conn, $_REQUEST['keyBox'] ?? '');
+  $drawing     = mysqli_real_escape_string($conn, $_REQUEST['drawing'] ?? '');
+  $sellCharge  = mysqli_real_escape_string($conn, $_REQUEST['sellCharge'] ?? '');
+  $del         = mysqli_real_escape_string($conn, $_REQUEST['del'] ?? '');
+  $orderBy     = htmlspecialchars($_REQUEST['orderBy'] ?? '');
+  $orderTo     = htmlspecialchars($_REQUEST['orderTo'] ?? '');
+  $sPage       = htmlspecialchars($_REQUEST['sPage'] ?? '');
 
   if ($articleNo) {
     // 編集
