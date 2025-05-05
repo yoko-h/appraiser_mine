@@ -501,7 +501,7 @@ function subFManagerViewEdit()
       <table border="0" cellpadding="5" cellspacing="1">
         <tr>
           <th>備考</th>
-          <td><textarea name="note" cols="50" rows="10"><?php print $note; ?></textarea></td>
+          <td><textarea name="note" cols="50" rows="10"><?php print isset($note) ? $note : ''; ?></textarea></td>
         </tr>
         <tr>
           <th>PDFファイル<?php print $purpose; ?></th>
