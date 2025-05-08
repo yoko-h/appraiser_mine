@@ -141,7 +141,7 @@ function subFManagerEdit()
 {
   $conn = fnDbConnect();
 
-  $sDel          = htmlspecialchars($_REQUEST['sDel']);
+  $sDel          = htmlspecialchars($_REQUEST['sDel'] ?? '');
   $sSearchDTFrom = htmlspecialchars($_REQUEST['sSearchDTFrom']);
   $sSearchDTTo   = htmlspecialchars($_REQUEST['sSearchDTTo']);
   $sName         = htmlspecialchars($_REQUEST['sName']);
@@ -193,21 +193,36 @@ function subFManagerEdit()
       <table border="0" cellpadding="5" cellspacing="1">
         <tr>
           <th>除外</th>
-          <td><input type="radio" name="del" value="1" checked="checked" /> 非除外
-            <input type="radio" name="del" value="0" <?php if ($del == '0') print ' checked="checked"'; ?> /> 除外
+          <td>
+            <!-- <input type="radio" name="del" value="1" checked="checked" /> 非除外
+            <input type="radio" name="del" value="0" <?php if ($del == '0') print ' checked="checked"'; ?> /> 除外 -->
+            <?php
+            $check1 = '';
+            $check2 = '';
+            if (($param["del"] ?? '') == '0') {
+              $check2 = "checked";
+            } else {
+              $check1 = "checked";
+            }
+            ?>
+            <input type="radio" name="del" value="1" <?php print $check1; ?> /> 非除外
+            <input type="radio" name="del" value="0" <?php print $check2; ?> /> 除外
           </td>
         </tr>
         <tr>
           <th>物件名<span class="red">（必須）</span></th>
-          <td><input type="text" name="name" value="<?php print $name; ?>" /></td>
+          <!-- <td><input type="text" name="name" value="<?php print $name; ?>" /></td> -->
+          <td><input type="text" name="name" value="<?php print isset($name) ? $name : ''; ?>" /></td>
         </tr>
         <tr>
           <th>部屋</th>
-          <td><input type="text" name="room" value="<?php print $room; ?>" /></td>
+          <!-- <td><input type="text" name="room" value="<?php print $room; ?>" /></td> -->
+          <td><input type="text" name="room" value="<?php print isset($room) ? $room : ''; ?>" /></td>
         </tr>
         <tr>
           <th>備考</th>
-          <td><textarea name="note" cols="50" rows="10"><?php print $note; ?></textarea></td>
+          <!-- <td><textarea name="note" cols="50" rows="10"><?php print $note; ?></textarea></td> -->
+          <td><textarea name="note" cols="50" rows="10"><?php print isset($note) ? $note : ''; ?></textarea></td>
         </tr>
       </table>
 
