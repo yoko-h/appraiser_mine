@@ -443,7 +443,7 @@ function subConstEdit()
       </tr>
       <tr>
         <th>営業担当者</th>
-        <td><input type="text" name="sellCharge" value="<?php print $sellCharge ?>" /></td>
+        <td><?php print $sellCharge ?></td>
       </tr>
       <tr>
         <th>工事</th>
