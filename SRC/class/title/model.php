@@ -5,25 +5,27 @@
 //
 function fnSqlFTitleList($param)
 {
-    $select = "SELECT DOCNO,CLASSNO,SEQNO,NAME";
-    $from = " FROM TBLDOC";
-    $where = " WHERE DEL = 1";
-    $order = " ORDER BY " . $param["orderBy"] . " " . $param["orderTo"];
-
-    return $select . $from . $where . $order;
+  $select = "SELECT DOCNO,CLASSNO,SEQNO,NAME";
+  $from = " FROM TBLDOC";
+  $where = " WHERE DEL = 1";
+  $order = " ORDER BY " . $param["orderBy"] . " " . $param["orderTo"];
+  $sql = $select . $from . $where . $order;
+  return $sql;
 }
 
 //
 // タイトル管理情報
 //
-function fnSqlFTitleEdit($DocNo)
+function fnSqlFTitleEdit($docNo)
 {
-    $select = "SELECT DOCNO,CLASSNO,SEQNO,NAME";
-    $from = " FROM TBLDOC";
-    $where = " WHERE DEL = 1";
-    $where .= " AND DOCNO = $DocNo";
+  $select = "SELECT DOCNO,CLASSNO,SEQNO,NAME";
+  $from = " FROM TBLDOC";
+  $where = " WHERE DEL = 1";
+  // $where .= " AND DOCNO = $docNo";
+  $where .= " AND DOCNO = " . intval($docNo); // 数値として扱う場合
 
-    return $select . $from . $where;
+
+  return $select . $from . $where;
 }
 
 //
@@ -31,14 +33,14 @@ function fnSqlFTitleEdit($DocNo)
 //
 function fnSqlFTitleUpdate($param)
 {
-    $sql = "UPDATE TBLDOC";
-    $sql .= " SET CLASSNO = '" . $param["classNo"] . "'";
-    $sql .= ",SEQNO = '" . $param["seqNo"] . "'";
-    $sql .= ",NAME = '" . $param["name"] . "'";
-    $sql .= ",UPDT = CURRENT_TIMESTAMP";
-    $sql .= " WHERE DocNo = " . $param["DocNo"];
+  $sql = "UPDATE TBLDOC";
+  $sql .= " SET CLASSNO = '" . $param["classNo"] . "'";
+  $sql .= ",SEQNO = '" . $param["seqNo"] . "'";
+  $sql .= ",NAME = '" . $param["name"] . "'";
+  $sql .= ",UPDT = CURRENT_TIMESTAMP";
+  $sql .= " WHERE DocNo = " . $param["DocNo"];
 
-    return $sql;
+  return $sql;
 }
 
 //
@@ -46,12 +48,12 @@ function fnSqlFTitleUpdate($param)
 //
 function fnSqlFTitleItemUpdate($param)
 {
-    $sql = "UPDATE TBLDOC";
-    $sql .= " SET CLASSNO = '" . $param["classNo"] . "'";
-    $sql .= ",UPDT = CURRENT_TIMESTAMP";
-    $sql .= " WHERE DocNo = " . $param["DocNo"];
+  $sql = "UPDATE TBLDOC";
+  $sql .= " SET CLASSNO = '" . $param["classNo"] . "'";
+  $sql .= ",UPDT = CURRENT_TIMESTAMP";
+  $sql .= " WHERE DocNo = " . $param["DocNo"];
 
-    return $sql;
+  return $sql;
 }
 
 //
@@ -59,26 +61,26 @@ function fnSqlFTitleItemUpdate($param)
 //
 function fnSqlFTitleInsert($param)
 {
-    $sql = "INSERT INTO TBLDOC(";
-    $sql .= "DocNo,classNo,seqNo,name,INSDT,UPDT,DEL";
-    $sql .= ")VALUES(";
-    $sql .= "'" . $param["DocNo"] . "','" . $param["classNo"] . "','" . $param["seqNo"] . "','" . $param["name"] . "',"
-                . "CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1)";
+  $sql = "INSERT INTO TBLDOC(";
+  $sql .= "DocNo,classNo,seqNo,name,INSDT,UPDT,DEL";
+  $sql .= ")VALUES(";
+  $sql .= "'" . $param["DocNo"] . "','" . $param["classNo"] . "','" . $param["seqNo"] . "','" . $param["name"] . "',"
+    . "CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1)";
 
-    return $sql;
+  return $sql;
 }
 
 //
 // タイトル管理情報削除
 //
-function fnSqlFTitleDelete($DocNo)
+function fnSqlFTitleDelete($docNo)
 {
-    $sql = "UPDATE TBLDOC";
-    $sql .= " SET DEL = -1";
-    $sql .= ",UPDT = CURRENT_TIMESTAMP";
-    $sql .= " WHERE DOCNO = '$DocNo'";
+  $sql = "UPDATE TBLDOC";
+  $sql .= " SET DEL = -1";
+  $sql .= ",UPDT = CURRENT_TIMESTAMP";
+  $sql .= " WHERE DOCNO = '$docNo'";
 
-    return $sql;
+  return $sql;
 }
 
 //
@@ -86,9 +88,9 @@ function fnSqlFTitleDelete($DocNo)
 //
 function fnSqlFTitleRepetition($classNo)
 {
-    $select = "SELECT DOCNO,CLASSNO,SEQNO,NAME";
-    $from = " FROM TBLDOC";
-    $where = " WHERE DEL = 1 AND CLASSNO = '$classNo'";
+  $select = "SELECT DOCNO,CLASSNO,SEQNO,NAME";
+  $from = " FROM TBLDOC";
+  $where = " WHERE DEL = 1 AND CLASSNO = '$classNo'";
 
-    return $select . $from . $where;
+  return $select . $from . $where;
 }
