@@ -53,6 +53,7 @@ function subFTitleEdit()
 
   $param["DocNo"] = htmlspecialchars($_REQUEST['docNo']);
   $param["sDocNo"] = htmlspecialchars($_REQUEST['sDocNo']);
+  $param["sClassNo"] = htmlspecialchars($_REQUEST['sClassNo']);
 
   if ($param["DocNo"]) {
     $sql = fnSqlFTitleEdit($param["DocNo"]);
@@ -63,20 +64,23 @@ function subFTitleEdit()
     $param["classNo"] = htmlspecialchars($row[1]);
     $param["seqNo"] = htmlspecialchars($row[2]);
     $param["name"] = htmlspecialchars($row[3]);
-
+    // echo "<br>更新前<br>";
+    // var_dump($param["DocNo"], $param["classNo"], $param["seqNo"], $param["name"]);
     $param["purpose"] = '更新';
     $param["btnImage"] = 'btn_load.png';
   } else {
+    // echo "<br>登録前<br>";
+    // var_dump($param["DocNo"], $param["classNo"], $param["seqNo"], $param["name"]);
     $param["purpose"] = '登録';
     $param["btnImage"] = 'btn_enter.png';
   }
-
   subMenu();
-  if ($param["sDocNo"]) {
-    subFTitleItemEditView($param);
-  } else {
-    subFTitleEditView($param);
-  }
+
+  // if ($param["sDocNo"]) {
+  //   subFTitleItemEditView($param);
+  // } else {
+  subFTitleEditView($param);
+  // }
 }
 
 //
@@ -89,16 +93,18 @@ function subFTitleEditComplete()
   $param["DocNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['DocNo']);
   $param["classNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['classNo']);
   $param["seqNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['seqNo']);
+  if (empty($param["seqNo"]) || !is_numeric($param["seqNo"])) {
+    $param["seqNo"] = 0; // デフォルト値を設定
+  }
   $param["name"] = mysqli_real_escape_string($param["conn"], $_REQUEST['name']);
-  $param["sClassNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['sClassNo'] ?? '');
+  // $param["sClassNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['sClassNo'] ?? '');
 
   $ErrClassNo = subFTitleRepetition($param["classNo"], $param["DocNo"]);
 
-  if ($param["DocNo"]) {
-    $param["DocNo"] = fnNextNo('DOC');
-    if ($param["seqNo"] == 0) {
+  if ($param["DocNo"]) { //★更新処理
 
-      // タイトルの更新処理
+    if ($param["seqNo"] === 0) { // タイトルの更新処理
+
       if (! $ErrClassNo) {
         // 更新前の情報を取得
         $sql = fnSqlFTitleEdit($param["DocNo"]);
@@ -115,9 +121,9 @@ function subFTitleEditComplete()
         $sql = fnSqlFTitleRepetition($beforeClassNo);
         $result = mysqli_query($param["conn"], $sql);
         while ($row = mysqli_fetch_array($result)) {
-          if ($row['SEQNO'] !== '0') {
+          if ($row[2] !== 0) {
             $param["DocNo"] = $row['DOCNO'];
-            $param["classNo"] = $row['CLASSQNO'];
+            $param["classNo"] = $row['CLASSNO'];
             $param["seqNo"] = $row['SEQNO'];
             $param["name"] = $row["NAME"];
             $sql = fnSqlFTitleItemUpdate($param);
@@ -131,29 +137,28 @@ function subFTitleEditComplete()
         $param["btnImage"] = 'btn_load.png';
         subFTitleMsg($param);
       }
-    } else {
-      $sql = fnSqlFTitleUpdate($param);
+    } else { // 項目名の更新処理
+      $sql = fnSqlFTitleItemUpdate($param);
       $res = mysqli_query($param["conn"], $sql);
       // $row = mysqli_fetch_array($res);
       subTitlePage1();
     }
-  } else {
+  } else { //★登録処理
     $param["DocNo"] = fnNextNo('DOC');
-    if (! $param["seqNo"]) {
-
+    if (! $param["seqNo"]) { // タイトルの登録
       if (! $ErrClassNo) {
-        $param["seqNo"] = 0;
         $sql = fnSqlFTitleInsert($param);
         $res = mysqli_query($param["conn"], $sql);
-        $param["ttl_flg"] = 0;
+        // $param["ttl_flg"] = 0;
+        $param["seqNo"] = 0;
+        subTitlePage0();
       } else {
         $param["DocNo"] = "";
         $param["purpose"] = '登録';
         $param["btnImage"] = 'btn_enter.png';
         subFTitleMsg($param);
       }
-      subTitlePage0();
-    } else {
+    } else { // 項目名の登録
       $sql = fnSqlFTitleInsert($param);
       $res = mysqli_query($param["conn"], $sql);
       subTitlePage1();
@@ -190,7 +195,7 @@ function subFTitleDelete()
     $res = mysqli_query($conn, $sql);
     while ($row = mysqli_fetch_array($res)) {
       $sql = fnSqlFTitleDelete($row['DOCNO']);
-      $result = mysqli_query($conn, $sql);
+      $res = mysqli_query($conn, $sql);
     }
   } else {
     $sql = fnSqlFTitleDelete($docNo);
@@ -259,7 +264,7 @@ function subFTitleRepetition($classNo, $docNo)
   $sql = fnSqlFTitleRepetition($classNo);
   $res = mysqli_query($conn, $sql);
   while ($row = mysqli_fetch_array($res)) {
-    if ($row['CLASSNO'] == $classNo && $row['SEQNO'] == 0) {
+    if ($row['CLASSNO'] == $classNo && $row['SEQNO'] === 0) {
       if ($row['DOCNO'] !== $docNo) {
         return $row['CLASSNO'];
       }

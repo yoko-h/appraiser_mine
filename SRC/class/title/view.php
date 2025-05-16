@@ -10,8 +10,8 @@ function subFTitleView($param)
   <a href="javascript:form.act.value='fTitleEdit';form.submit();"><img src="./images/btn_enter.png"></a>
   <form name="form" id="form" action="index.php" method="post">
     <input type="hidden" name="act" />
-    <input type="hidden" name="orderBy" value="<?php print $param["orderBy"] ?>" />
-    <input type="hidden" name="orderTo" value="<?php print $param["orderTo"] ?>" />
+    <!-- <input type="hidden" name="orderBy" value="<?php print $param["orderBy"] ?>" />
+    <input type="hidden" name="orderTo" value="<?php print $param["orderTo"] ?>" /> -->
     <input type="hidden" name="sClassNo" />
     <input type="hidden" name="sDocNo" />
     <input type="hidden" name="docNo" />
@@ -73,10 +73,12 @@ function subFTitleItemView($param)
         <th>タイトル</th>
         <td class="f16">
           <?php
+
           $sql = fnSqlFTitleEdit($param["sDocNo"]);
           $res = mysqli_query($param["conn"], $sql);
           $row = mysqli_fetch_array($res);
-          print htmlspecialchars($row[3]);
+          // var_dump($row);
+          print htmlspecialchars($row[3] ?? '');
           ?>
         </td>
       </tr>
@@ -131,7 +133,7 @@ function subFTitleEditView($param)
   <form name="form" id="form" action="index.php" method="post">
     <input type="hidden" name="act" />
     <input type="hidden" name="DocNo" value="<?php print $param["DocNo"]; ?>" />
-    <input type="hidden" name="seqNo" />
+    <input type="hidden" name="seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" />
     <input type="hidden" name="orderBy" value="<?php print $param["orderBy"]; ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
 
@@ -163,6 +165,9 @@ function subFTitleEditView($param)
       <a href="javascript:fnFTitleDeleteCheck(<?php print $param["DocNo"]; ?>);"><img src="./images/btn_del.png" /></a>
     <?php
     }
+    ?>
+    <?php
+
     ?>
   </form>
 <?php
@@ -212,7 +217,8 @@ function subFTitleItemEditView($param)
         </tr>
       </table>
     </div>
-    <a href="javascript:fnFTitleEditCheck();"><img src="./images/<?php print $param["btnImage"]; ?>" /></a>
+
+    <a href="javascript:fnFTitleEditCheck(1);"><img src="./images/<?php print $param["btnImage"]; ?>" /></a>
     <a href="javascript:form.act.value='fTitleItemSearch';form.submit();"><img src="./images/btn_return.png" /></a>
     <?php
     if ($param["DocNo"]) {

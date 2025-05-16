@@ -21,9 +21,9 @@ function fnSqlFTitleEdit($docNo)
   $select = "SELECT DOCNO,CLASSNO,SEQNO,NAME";
   $from = " FROM TBLDOC";
   $where = " WHERE DEL = 1";
-  // $where .= " AND DOCNO = $docNo";
-  $where .= " AND DOCNO = " . intval($docNo); // 数値として扱う場合
-
+  // $where .= " AND DOCNO = $DocNo";
+  $where .= " AND DOCNO = '$docNo'"; // 脆弱性があり
+  // $where = " WHERE DEL = 1 AND DOCNO = ?"; // プレースホルダ使用
 
   return $select . $from . $where;
 }
@@ -33,13 +33,14 @@ function fnSqlFTitleEdit($docNo)
 //
 function fnSqlFTitleUpdate($param)
 {
-  $sql = "UPDATE TBLDOC";
-  $sql .= " SET CLASSNO = '" . $param["classNo"] . "'";
-  $sql .= ",SEQNO = '" . $param["seqNo"] . "'";
-  $sql .= ",NAME = '" . $param["name"] . "'";
-  $sql .= ",UPDT = CURRENT_TIMESTAMP";
+  $sql = "UPDATE TBLDOC SET";
+  $sql .= " CLASSNO = '" . $param["classNo"] . "',";
+  $sql .= " SEQNO = '" . $param["seqNo"] . "',";
+  $sql .= " NAME = '" . $param["name"] . "',";
+  $sql .= " UPDT = CURRENT_TIMESTAMP";
   $sql .= " WHERE DocNo = " . $param["DocNo"];
-
+  // echo "<br>タイトル更新<br>";
+  // var_dump($sql);
   return $sql;
 }
 
@@ -48,11 +49,14 @@ function fnSqlFTitleUpdate($param)
 //
 function fnSqlFTitleItemUpdate($param)
 {
-  $sql = "UPDATE TBLDOC";
-  $sql .= " SET CLASSNO = '" . $param["classNo"] . "'";
-  $sql .= ",UPDT = CURRENT_TIMESTAMP";
+  $sql = "UPDATE TBLDOC SET";
+  $sql .= " CLASSNO = '" . $param["classNo"] . "',";
+  $sql .= " SEQNO = '" . $param["seqNo"] . "',";
+  $sql .= " NAME = '" . $param["name"] . "',";
+  $sql .= " UPDT = CURRENT_TIMESTAMP";
   $sql .= " WHERE DocNo = " . $param["DocNo"];
-
+  // echo "<br>項目名更新<br>";
+  // var_dump($sql);
   return $sql;
 }
 
@@ -64,7 +68,8 @@ function fnSqlFTitleInsert($param)
   $sql = "INSERT INTO TBLDOC(";
   $sql .= "DocNo,classNo,seqNo,name,INSDT,UPDT,DEL";
   $sql .= ")VALUES(";
-  $sql .= "'" . $param["DocNo"] . "','" . $param["classNo"] . "','" . $param["seqNo"] . "','" . $param["name"] . "',"
+  // $sql .= "'" . $param["DocNo"] . "','" . $param["classNo"] . "','" . $param["seqNo"] . "','" . $param["name"] . "',"
+  $sql .= "" . $param["DocNo"] . "," . $param["classNo"] . "," . $param["seqNo"] . ",'" . $param["name"] . "',"
     . "CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1)";
 
   return $sql;
