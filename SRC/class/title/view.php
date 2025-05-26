@@ -10,12 +10,12 @@ function subFTitleView($param)
   <a href="javascript:form.act.value='fTitleEdit';form.submit();"><img src="./images/btn_enter.png"></a>
   <form name="form" id="form" action="index.php" method="post">
     <input type="hidden" name="act" />
-    <input type="hidden" name="docNo" />
-    <input type="hidden" name="sDocNo" />
     <input type="hidden" name="sClassNo" />
+    <input type="hidden" name="sDocNo" />
     <input type="hidden" name="orderBy" value="<?php print $param["orderBy"] ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"] ?>" />
-
+    <input type="hidden" name="docNo" /> <!-- タイトル編集時に必要 -->
+    <input type="hidden" name="seqNo" />
 
     <div class="list">
       <table border="0" cellpadding="4" cellspacing="1">
@@ -34,7 +34,6 @@ function subFTitleView($param)
           $classNo = htmlspecialchars($row[1]);
           $seqNo   = htmlspecialchars($row[2]);
           $name    = htmlspecialchars($row[3]);
-
           if ($seqNo == 0) {
         ?>
             <tr>
@@ -64,18 +63,18 @@ function subFTitleItemView($param)
 
   <form name="form" id="form" action="index.php" method="post">
     <input type="hidden" name="act" />
-    <input type="hidden" name="docNo" />
-    <input type="hidden" name="sDocNo" value="<?php print $param["sDocNo"] ?>" />
-    <input type="hidden" name="sClassNo" value="<?php print $param["sClassNo"] ?>" />
+    <input type="hidden" name="sClassNo" value="<?php print $param["sClassNo"] ?>" /><!-- タイトルのclassNo -->
+    <input type="hidden" name="sDocNo" value="<?php print $param["sDocNo"] ?>" /><!-- タイトルのdocNo -->
     <input type="hidden" name="orderBy" value="<?php print $param["orderBy"] ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"] ?>" />
+    <input type="hidden" name="docNo" /> <!-- 項目編集時に必要 -->
 
     <table border="0" cellpadding="4" cellspacing="1">
       <tr>
         <th>タイトル</th>
         <td class="f16">
           <?php
-          $sql = fnSqlFTitleEdit($param["sDocNo"]);
+          $sql = fnSqlFTitleEdit($param["sDocNo"]); //タイトルのdocNo
           $res = mysqli_query($param["conn"], $sql);
           $row = mysqli_fetch_array($res);
           print htmlspecialchars($row[3]);
@@ -127,18 +126,14 @@ function subFTitleItemView($param)
 function subFTitleEditView($param)
 {
 ?>
-  <script type="text/javascript" src="./js/title.js"></script>
   <h1>タイトル管理<?php print $param["purpose"]; ?></h1>
 
   <form name="form" id="form" action="index.php" method="post">
     <input type="hidden" name="act" />
-    <input type="hidden" name="docNo" />
-    <input type="hidden" name="sDocNo" />
-    <input type="hidden" name="sName" />
     <input type="hidden" name="orderBy" value="<?php print $param["orderBy"]; ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
-
-    <!-- <input type="hidden" name="seqNo" /> -->
+    <input type="hidden" name="docNo" value="<?php print $param["DocNo"]; ?>" />
+    <input type="hidden" name="seqNo" value="<?php print $param["seqNo"]; ?>" />
 
     <div class="list">
       <table border="0" cellpadding="5" cellspacing="1">
@@ -170,6 +165,7 @@ function subFTitleEditView($param)
 
     ?>
   </form>
+  <script type="text/javascript" src="./js/title.js"></script>
 <?php
 }
 
@@ -179,13 +175,11 @@ function subFTitleEditView($param)
 function subFTitleItemEditView($param)
 {
 ?>
-  <script type="text/javascript" src="./js/title.js"></script>
-
   <h1>項目名管理<?php print $param["purpose"]; ?></h1>
 
   <form name="form" id="form" action="index.php" method="post">
     <input type="hidden" name="act" />
-    <input type="hidden" name="docNo" />
+    <!-- <input type="hidden" name="docNo" /> -->
 
     <input type="hidden" name="sDocNo" value="<?php print $param["sDocNo"]; ?>" />
     <input type="hidden" name="sClassNo" value="<?php print $param["sClassNo"]; ?>" />
@@ -193,8 +187,7 @@ function subFTitleItemEditView($param)
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
 
     <input type="hidden" name="DocNo" value="<?php print $param["DocNo"]; ?>" />
-    <input type="hidden" name="seqNo" />
-    <input type="hidden" name="classNo" />
+    <!-- <input type="hidden" name="classNo" /> -->
 
     <div class="list">
       <table border="0" cellpadding="5" cellspacing="1">
@@ -212,7 +205,13 @@ function subFTitleItemEditView($param)
         </tr>
         <tr>
           <th>表示順<span class="red">（必須）</span></th>
-          <td><input type="text" name="seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /></td>
+          <td><input type="text" name="seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" />
+            <?php
+            if ($param["classNoChk"] ?? '') {
+              print "<span class=\"red\" algin=\"right\">" . $param["classNoChk"] . "</span>";
+            }
+            ?>
+          </td>
         </tr>
         <tr>
           <th>名前<span class="red">（必須）</span></th>
@@ -220,7 +219,7 @@ function subFTitleItemEditView($param)
         </tr>
       </table>
     </div>
-    <a href="javascript:fnFTitleEditCheck(1);"><img src="./images/<?php print $param["btnImage"]; ?>" /></a>
+    <a href="javascript:fnFTitleEditCheck();"><img src="./images/<?php print $param["btnImage"]; ?>" /></a>
     <a href="javascript:form.act.value='fTitleItemSearch';form.submit();"><img src="./images/btn_return.png" /></a>
     <?php
     if ($param["DocNo"]) {
@@ -230,6 +229,7 @@ function subFTitleItemEditView($param)
     }
     ?>
   </form>
+  <script type="text/javascript" src="./js/title.js"></script>
 <?php
 }
 ?>

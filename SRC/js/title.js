@@ -2,20 +2,21 @@
 //タイトル管理チェック
 //
 function fnFTitleEditCheck(zero) {
-  tmp = form.classNo.value;
-  // 下記は(zero === 0)の時のバリデーション
-  if (tmp.length == 0) {
-    alert('表示順を入力してください');
-    return;
-  }
-  if (tmp.length > 2 || tmp.match(/[^0-9]+/)) {
-    alert('表示順は2文字以内の半角数字で入力してください');
-    return;
+  if (zero == 0) {
+    tmp = form.classNo.value;
+    if (tmp.length == '0') {
+      alert('表示順を入力してください');
+      return;
+    }
+    if (tmp.length > 2 || tmp.match(/[^0-9]+/)) {
+      alert('表示順は2文字以内の半角数字で入力してください');
+      return;
+    }
   }
 
-  tmp = form.seqNo.value;
   if (zero !== 0) {
-    if (tmp.length == 0) {
+    tmp = form.seqNo.value;
+    if (tmp.length == '0') {
       alert('表示順を入力してください');
       return;
     }
@@ -30,7 +31,6 @@ function fnFTitleEditCheck(zero) {
   }
 
   tmp = form.name.value;
-  // 下記は(zero === 0)の時のバリデーション
   if (tmp.length == 0) {
     alert('名前を入力してください');
     return;
