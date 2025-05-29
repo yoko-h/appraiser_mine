@@ -192,7 +192,7 @@ function subFTitleEditComplete()
         // 重複時
         $param["purpose"] = '更新';
         $param["btnImage"] = 'btn_load.png';
-        subFTitleMsg($param, 'classNoDup');
+        subFTitleMsg($param, 'classNoDup'); //エラータイプを渡す
       }
     } else {                      //---項目更新
       $ErrClassNo = subFTitleRepetition($param["classNo"], $param["DocNo"], $param["seqNo"], $haveParent);
@@ -206,7 +206,7 @@ function subFTitleEditComplete()
       } else {
         $param["purpose"] = '更新';
         $param["btnImage"] = 'btn_load.png';
-        subFTitleMsg($param, 'seqNoDup');
+        subFTitleMsg($param, 'seqNoDup'); //エラータイプを渡す
       }
     }
   } else { //登録コード
@@ -217,12 +217,11 @@ function subFTitleEditComplete()
         $param["seqNo"] = 0;
         $sql = fnSqlFTitleInsert($param);
         $res = mysqli_query($param["conn"], $sql);
-        // $param["ttl_flg"] = 0;
         subTitlePage0();
       } else {
         $param["purpose"] = '登録';
         $param["btnImage"] = 'btn_enter.png';
-        subFTitleMsg($param, 'classNoDup'); // ★ エラータイプを渡す
+        subFTitleMsg($param, 'classNoDup'); //エラータイプを渡す
       }
     } else {                      //---項目登録 親要素あり
       $ErrClassNo = subFTitleRepetition($param["classNo"], $param["DocNo"], $param["seqNo"], $haveParent);
@@ -234,7 +233,7 @@ function subFTitleEditComplete()
         $param["DocNo"] = ""; // 新規登録失敗時は DocNo をクリア
         $param["purpose"] = '登録';
         $param["btnImage"] = 'btn_enter.png';
-        subFTitleMsg($param, 'seqNoDup'); // ★ エラータイプを渡す
+        subFTitleMsg($param, 'seqNoDup'); //エラータイプを渡す
       }
     }
   }
@@ -322,39 +321,30 @@ function subFTitleRepetition($classNo, $docNo, $seqNo, $haveParent)
 //
 // エラー表示
 //
-// function subFTitleMsg($param)
 function subFTitleMsg($param, $errorType)
 {
-  if ($errorType === 'classNoDup') {
-    // echo "<br>↓logic:fnSqlFTitleEditByClassNo<br>";
+  if ($errorType === 'classNoDup') { //タイトルでのエラー
     $param["classNoChk"] = "既に登録されている表示順です";
-    // 重複しているレコードの情報を取得して編集画面に表示 (classNo)
-    $sql = fnSqlFTitleEditByClassNo($param["classNo"], $param["DocNo"]); // classNo で検索する関数
-    $res = mysqli_query($param["conn"], $sql);
-    if ($row = mysqli_fetch_array($res)) {
-      $param["seqNo"] = $row[2];
-      $param["name"] = $row[3];
-    }
+    // // 重複しているレコードの情報を取得して編集画面に表示 (classNo)
+    // $sql = fnSqlFTitleEditByClassNo($param["classNo"], $param["DocNo"]);
+    // $res = mysqli_query($param["conn"], $sql);
+    // if ($row = mysqli_fetch_array($res)) {
+    //   $param["seqNo"] = $row[2];
+    //   $param["name"] = $row[3];
+    // }
     subMenu();
     subFTitleEditView($param);
-  } elseif ($errorType === 'seqNoDup') {
-    // echo "<br>↓logic:fnSqlFTitleEditBySeqNo<br>";
+  } elseif ($errorType === 'seqNoDup') { //項目でのエラー
     $param["seqNoChk"] = "既に登録されている表示順です";
-    // 重複しているレコードの情報を取得して編集画面に表示 (seqNo)
-    $sql = fnSqlFTitleEditBySeqNo($param["classNo"], $param["seqNo"], $param["DocNo"]); // classNo と seqNo で検索する関数
-    $res = mysqli_query($param["conn"], $sql);
-    if ($row = mysqli_fetch_array($res)) {
-      $param["seqNo"] = $row[2]; // 重複している seqNo を表示
-      $param["name"] = $row[3];
-    }
-    $_REQUEST['act'] = 'fTitleItemEdit';
+    // // 重複しているレコードの情報を取得して編集画面に表示 (seqNo)
+    // $sql = fnSqlFTitleEditBySeqNo($param["classNo"], $param["seqNo"], $param["DocNo"]);
+    // $res = mysqli_query($param["conn"], $sql);
+    // if ($row = mysqli_fetch_array($res)) {
+    //   $param["seqNo"] = $row[2];
+    //   $param["name"] = $row[3];
+    // }
     subMenu();
     subFTitleItemEditView($param);
-  } elseif ($errorType === 'required') {
-    $param["errorMsg"] = "必須項目が入力されていません";
-    $_REQUEST['act'] = 'fTitleEdit'; // 必須エラーの場合はどちらの画面に戻るか検討が必要
-    subMenu();
-    subFTitleEditView($param);
   }
   print "</body>\n</html>";
   exit();
