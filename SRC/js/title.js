@@ -13,7 +13,6 @@ function fnFTitleEditCheck(zero) {
       return;
     }
   }
-
   if (zero !== 0) {
     tmp = form.seqNo.value;
     if (tmp.length == '0') {
@@ -29,7 +28,6 @@ function fnFTitleEditCheck(zero) {
       return;
     }
   }
-
   tmp = form.name.value;
   if (tmp.length == 0) {
     alert('名前を入力してください');
@@ -39,6 +37,7 @@ function fnFTitleEditCheck(zero) {
     alert('名前は100文字以内で入力してください');
     return;
   }
+
 
   if (confirm('この内容で登録します。よろしいですか？')) {
     form.act.value = 'fTitleEditComplete';

@@ -10,12 +10,12 @@ function subFTitleView($param)
   <a href="javascript:form.act.value='fTitleEdit';form.submit();"><img src="./images/btn_enter.png"></a>
   <form name="form" id="form" action="index.php" method="post">
     <input type="hidden" name="act" />
-    <input type="hidden" name="sClassNo" />
-    <input type="hidden" name="sDocNo" />
+    <input type="hidden" name="sClassNo" /> <!-- 項目管理画面で必要 -->
+    <input type="hidden" name="sDocNo" /> <!-- 項目管理画面で必要 -->
+    <input type="hidden" name="docNo" /> <!-- タイトル編集画面で必要 -->
     <input type="hidden" name="orderBy" value="<?php print $param["orderBy"] ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"] ?>" />
-    <input type="hidden" name="docNo" /> <!-- タイトル編集時に必要 -->
-    <input type="hidden" name="seqNo" />
+    <!-- <input type="hidden" name="seqNo" /> -->
 
     <div class="list">
       <table border="0" cellpadding="4" cellspacing="1">
@@ -26,7 +26,7 @@ function subFTitleView($param)
           <th class="list_head">編集</th>
         </tr>
         <?php
-        $sql = fnSqlFTitleList($param);
+        $sql = fnSqlFTitleList();
         $res = mysqli_query($param["conn"], $sql);
         $i = 0;
         while ($row = mysqli_fetch_array($res)) {
@@ -68,6 +68,7 @@ function subFTitleItemView($param)
     <input type="hidden" name="orderBy" value="<?php print $param["orderBy"] ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"] ?>" />
     <input type="hidden" name="docNo" /> <!-- 項目編集時に必要 -->
+    <!-- <input type="hidden" name="seqNo" /> -->
 
     <table border="0" cellpadding="4" cellspacing="1">
       <tr>
@@ -91,7 +92,8 @@ function subFTitleItemView($param)
           <th class="list_head">編集</th>
         </tr>
         <?php
-        $sql = fnSqlFTitleList($param);
+
+        $sql = fnSqlFTitleItemList($param["sClassNo"]); //classNo に紐づく項目表示したいから
         $res = mysqli_query($param["conn"], $sql);
         $i = 0;
         while ($row = mysqli_fetch_array($res)) {
@@ -132,8 +134,8 @@ function subFTitleEditView($param)
     <input type="hidden" name="act" />
     <input type="hidden" name="orderBy" value="<?php print $param["orderBy"]; ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
-    <input type="hidden" name="docNo" value="<?php print $param["DocNo"]; ?>" />
-    <input type="hidden" name="seqNo" value="<?php print $param["seqNo"]; ?>" />
+    <input type="hidden" name="seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /><!-- タイトル編集時に必要 -->
+    <input type="hidden" name="docNo" value="<?php print $param["DocNo"] ?? ''; ?>" />
 
     <div class="list">
       <table border="0" cellpadding="5" cellspacing="1">
@@ -179,15 +181,13 @@ function subFTitleItemEditView($param)
 
   <form name="form" id="form" action="index.php" method="post">
     <input type="hidden" name="act" />
-    <!-- <input type="hidden" name="docNo" /> -->
-
     <input type="hidden" name="sDocNo" value="<?php print $param["sDocNo"]; ?>" />
-    <input type="hidden" name="sClassNo" value="<?php print $param["sClassNo"]; ?>" />
+    <input type="hidden" name="sClassNo" value="<?php print $param["sClassNo"] ?? ''; ?>" />
+    <input type="hidden" name="classNo" value="<?php print $param["sClassNo"] ?? ''; ?>" />
     <input type="hidden" name="orderBy" value="<?php print $param["orderBy"]; ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
+    <input type="hidden" name="docNo" value="<?php print $param["DocNo"]; ?>" />
 
-    <input type="hidden" name="DocNo" value="<?php print $param["DocNo"]; ?>" />
-    <!-- <input type="hidden" name="classNo" /> -->
 
     <div class="list">
       <table border="0" cellpadding="5" cellspacing="1">
@@ -207,8 +207,8 @@ function subFTitleItemEditView($param)
           <th>表示順<span class="red">（必須）</span></th>
           <td><input type="text" name="seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" />
             <?php
-            if ($param["classNoChk"] ?? '') {
-              print "<span class=\"red\" algin=\"right\">" . $param["classNoChk"] . "</span>";
+            if ($param["seqNoChk"] ?? '') {
+              print "<span class=\"red\" algin=\"right\">" . $param["seqNoChk"] . "</span>";
             }
             ?>
           </td>
