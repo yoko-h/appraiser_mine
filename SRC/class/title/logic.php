@@ -61,7 +61,6 @@ function subFTitleEdit()
     $param["name"] = htmlspecialchars($row[3]);
 
     $param["purpose"] = '更新';
-    echo "<br>更新";
     $param["btnImage"] = 'btn_load.png';
   } else {
     $param["purpose"] = '登録';
@@ -91,15 +90,11 @@ function subFTitleItemEdit()
     $param["orderBy"] = 'SEQNO';
     $param["orderTo"] = 'asc';
   }
+
   $param["DocNo"] = htmlspecialchars($_REQUEST['docNo']);
-  // $param["seqNo"] = htmlspecialchars($_REQUEST['seqNo']);
   $param["sDocNo"] = htmlspecialchars($_REQUEST['sDocNo']); //親要素タイトルに必要
   $param["sClassNo"] = htmlspecialchars($_REQUEST['sClassNo']); //項目リストに必要
-
-
-  // $param["DocNo"] = htmlspecialchars($_REQUEST['docNo']);
-  // $param["sDocNo"] = htmlspecialchars($_REQUEST['sDocNo']);
-  // $param["sClassNo"] = htmlspecialchars($_REQUEST['sClassNo']);
+  $param["classNo"] = htmlspecialchars($_REQUEST['sClassNo']); // ここで classNo をセット
 
   if ($param["DocNo"]) { //編集対象のレコードの情報
     $sql = fnSqlFTitleEdit($param["DocNo"]);
@@ -112,11 +107,9 @@ function subFTitleItemEdit()
     $param["name"] = htmlspecialchars($row[3]);
 
     $param["purpose"] = '更新';
-
     $param["btnImage"] = 'btn_load.png';
   } else {
     $param["purpose"] = '登録';
-
     $param["btnImage"] = 'btn_enter.png';
   }
 
@@ -125,17 +118,16 @@ function subFTitleItemEdit()
 }
 
 //
-// タイトル管理編集完了処理
+// 編集完了処理
 //
 function subFTitleEditComplete()
 {
   $param = getFTitleParam();
-  // $param["sDocNo"] = htmlspecialchars($_REQUEST['sDocNo'] ?? ''); //親要素タイトルに必要
-  // $param["sClassNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['sClassNo'] ?? '');
+
   $param["sDocNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['sDocNo'] ?? '');
   $param["DocNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['docNo'] ?? '');
   $param["classNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['classNo'] ?? '');
-  $param["seqNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['seqNo'] ?? ''); //seqNo更新に必要
+  $param["seqNo"] = mysqli_real_escape_string($param["conn"], $_REQUEST['seqNo'] ?? '');
   $param["name"] = mysqli_real_escape_string($param["conn"], $_REQUEST['name'] ?? '');
 
   // 更新前の情報を取得
@@ -147,21 +139,15 @@ function subFTitleEditComplete()
 
   $haveParent = $param["seqNo"] > 0 || $param["classNo"] === ''; // 親要素でない定義(親要素あり)
   $ErrClassNo = subFTitleRepetition($param["classNo"], $param["DocNo"], $param["seqNo"], false); //タイトル登録で使う
-  echo "<br>★★★スタート<br>";
   if ($param["DocNo"]) { //更新コード
-    echo '<br>★★通過確認１<br>';
-    var_dump($haveParent);
-    if ($param["seqNo"] == '0' && !$haveParent) { //---タイトル更新
-      $haveParent = true; // タイトル更新時は親要素
-      var_dump($haveParent);
-
+    if ($param["seqNo"] == '0' && !$haveParent || $param["seqNo"] == '') { //---タイトル更新
+      $haveParent = false; // タイトル更新時は親要素
       // ★ 変更がないかチェック
       if ($param["classNo"] == $beforeClassNo && $param["name"] == $beforeName) {
         subTitlePage0();
         return;
       }
       if (!$ErrClassNo) {
-        echo '★★タイトル更新';
         // タイトルの更新
         $sql = fnSqlFTitleUpdate($param);
         $res = mysqli_query($param["conn"], $sql);
@@ -197,9 +183,6 @@ function subFTitleEditComplete()
     } else {                      //---項目更新
       $ErrClassNo = subFTitleRepetition($param["classNo"], $param["DocNo"], $param["seqNo"], $haveParent);
       if (!$ErrClassNo) {
-        echo '<br>$haveParent<br>';
-        var_dump($haveParent);
-        echo '★★項目更新';
         $sql = fnSqlFTitleItemUpdate($param);
         $res = mysqli_query($param["conn"], $sql);
         subTitlePage1();
@@ -211,7 +194,7 @@ function subFTitleEditComplete()
     }
   } else { //登録コード
     $param["DocNo"] = fnNextNo('DOC');
-    // $ErrClassNo = subFTitleRepetition($param["classNo"], '', $param["seqNo"], $haveParent); // 新規登録時は docNo は空
+
     if (!$haveParent) {              //---タイトル登録 親要素なし
       if (!$ErrClassNo) {
         $param["seqNo"] = 0;
@@ -230,7 +213,7 @@ function subFTitleEditComplete()
         $res = mysqli_query($param["conn"], $sql);
         subTitlePage1();
       } else {
-        $param["DocNo"] = ""; // 新規登録失敗時は DocNo をクリア
+        // $param["DocNo"] = ""; // ★これが原因でエラーが起きてた
         $param["purpose"] = '登録';
         $param["btnImage"] = 'btn_enter.png';
         subFTitleMsg($param, 'seqNoDup'); //エラータイプを渡す
@@ -246,7 +229,6 @@ function subTitlePage0()
   $_REQUEST['act'] = 'fTitleSearch';
   subFTitle();
 }
-
 function subTitlePage1()
 {
   $_REQUEST['act'] = 'fTitleItemSearch';
@@ -254,23 +236,23 @@ function subTitlePage1()
 }
 
 //
-// タイトル管理削除処理
+// 削除処理
 //
 function subFTitleDelete($classNo, $docNo, $seqNo)
 {
   $conn = fnDbConnect();
 
-  $DocNo = $_REQUEST['DocNo'];
-
+  $docNo = $_REQUEST['DocNo'];
+  echo "<br>削除処理<br>";
   if ($_REQUEST['seqNo'] == 0) {
-    $sql = fnSqlFTitleRepetition($classNo, $docNo, $seqNo);
+    $sql = fnSqlFTitleRepetitionParent($classNo, $seqNo, $docNo);
     $res = mysqli_query($conn, $sql);
     while ($row = mysqli_fetch_array($res)) {
       $sql = fnSqlFTitleDelete($row['DOCNO']);
       $res = mysqli_query($conn, $sql);
     }
   } else {
-    $sql = fnSqlFTitleDelete($DocNo);
+    $sql = fnSqlFTitleDelete($docNo);
     $res = mysqli_query($conn, $sql);
   }
 
@@ -290,6 +272,7 @@ function getFTitleParam()
 
   $param["orderBy"] = $_REQUEST['orderBy'] ?? '';
   $param["orderTo"] = $_REQUEST['orderTo'] ?? '';
+
   return $param;
 }
 
@@ -302,10 +285,8 @@ function subFTitleRepetition($classNo, $docNo, $seqNo, $haveParent)
   $sql = '';
 
   if ($haveParent) {
-    echo "<br>logic:親要素自身 タイトル<br>";
     $sql = fnSqlFTitleRepetitionParent($classNo, $seqNo, $docNo);
   } else {
-    echo "<br>logic:親要素あり(子要素) 項目<br>";
     $sql = fnSqlFTitleRepetitionChild($classNo, $seqNo, $docNo);
   }
 
@@ -323,26 +304,13 @@ function subFTitleRepetition($classNo, $docNo, $seqNo, $haveParent)
 //
 function subFTitleMsg($param, $errorType)
 {
+  $param["DocNo"] = ''; // DocNo をクリア
   if ($errorType === 'classNoDup') { //タイトルでのエラー
     $param["classNoChk"] = "既に登録されている表示順です";
-    // // 重複しているレコードの情報を取得して編集画面に表示 (classNo)
-    // $sql = fnSqlFTitleEditByClassNo($param["classNo"], $param["DocNo"]);
-    // $res = mysqli_query($param["conn"], $sql);
-    // if ($row = mysqli_fetch_array($res)) {
-    //   $param["seqNo"] = $row[2];
-    //   $param["name"] = $row[3];
-    // }
     subMenu();
     subFTitleEditView($param);
   } elseif ($errorType === 'seqNoDup') { //項目でのエラー
     $param["seqNoChk"] = "既に登録されている表示順です";
-    // // 重複しているレコードの情報を取得して編集画面に表示 (seqNo)
-    // $sql = fnSqlFTitleEditBySeqNo($param["classNo"], $param["seqNo"], $param["DocNo"]);
-    // $res = mysqli_query($param["conn"], $sql);
-    // if ($row = mysqli_fetch_array($res)) {
-    //   $param["seqNo"] = $row[2];
-    //   $param["name"] = $row[3];
-    // }
     subMenu();
     subFTitleItemEditView($param);
   }

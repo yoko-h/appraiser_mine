@@ -68,7 +68,6 @@ function subFTitleItemView($param)
     <input type="hidden" name="orderBy" value="<?php print $param["orderBy"] ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"] ?>" />
     <input type="hidden" name="docNo" /> <!-- 項目編集時に必要 -->
-    <!-- <input type="hidden" name="seqNo" /> -->
 
     <table border="0" cellpadding="4" cellspacing="1">
       <tr>
@@ -132,7 +131,6 @@ function subFTitleEditView($param)
 
   <form name="form" id="form" action="index.php" method="post">
     <input type="hidden" name="act" />
-    <input type="hidden" name="orderBy" value="<?php print $param["orderBy"]; ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
     <input type="hidden" name="seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /><!-- タイトル編集時に必要 -->
     <input type="hidden" name="docNo" value="<?php print $param["DocNo"] ?? ''; ?>" />
@@ -161,7 +159,7 @@ function subFTitleEditView($param)
     <?php
     if ($param["DocNo"]) {
     ?>
-      <a href="javascript:fnFTitleDeleteCheck();"><img src="./images/btn_del.png" /></a>
+      <a href="javascript:fnFTitleDeleteCheck(no);"><img src="./images/btn_del.png" /></a>
     <?php
     }
 
@@ -182,12 +180,8 @@ function subFTitleItemEditView($param)
   <form name="form" id="form" action="index.php" method="post">
     <input type="hidden" name="act" />
     <input type="hidden" name="sDocNo" value="<?php print $param["sDocNo"]; ?>" />
-    <input type="hidden" name="sClassNo" value="<?php print $param["sClassNo"] ?? ''; ?>" />
-    <input type="hidden" name="classNo" value="<?php print $param["sClassNo"] ?? ''; ?>" />
-    <input type="hidden" name="orderBy" value="<?php print $param["orderBy"]; ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
     <input type="hidden" name="docNo" value="<?php print $param["DocNo"]; ?>" />
-
 
     <div class="list">
       <table border="0" cellpadding="5" cellspacing="1">
@@ -200,6 +194,8 @@ function subFTitleItemEditView($param)
             $row = mysqli_fetch_array($res);
             print htmlspecialchars($row[3]);
             ?>
+            <input type="hidden" name="sClassNo" value="<?php print htmlspecialchars($row[1]); ?>" />
+            <input type="hidden" name="classNo" value="<?php print htmlspecialchars($row[1]); ?>" />
             <input type="hidden" name="sName" value="<?php print htmlspecialchars($row[3]); ?>" />
           </td>
         </tr>
