@@ -15,6 +15,7 @@ function fnFTitleEditCheck(zero) {
   }
   if (zero !== 0) {
     tmp = form.seqNo.value;
+    // console.log(length);
     if (tmp.length == '0') {
       alert('表示順を入力してください');
       return;
@@ -38,15 +39,16 @@ function fnFTitleEditCheck(zero) {
     return;
   }
 
-
+  // 確認のダイアログ
   if (confirm('この内容で登録します。よろしいですか？')) {
     form.act.value = 'fTitleEditComplete';
     form.submit();
   }
 }
 
-
-
+//
+//削除
+//
 function fnFTitleDeleteCheck(no) {
   if (confirm('削除します。よろしいですか？')) {
     form.DocNo.value = no;

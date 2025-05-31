@@ -12,7 +12,7 @@ function subFTitleView($param)
     <input type="hidden" name="act" />
     <input type="hidden" name="sClassNo" /> <!-- 項目管理画面で必要 -->
     <input type="hidden" name="sDocNo" /> <!-- 項目管理画面で必要 -->
-    <input type="hidden" name="docNo" /> <!-- タイトル編集画面で必要 -->
+    <input type="hidden" name="DocNo" /> <!-- タイトル編集画面で必要 -->
     <input type="hidden" name="orderBy" value="<?php print $param["orderBy"] ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"] ?>" />
     <!-- <input type="hidden" name="seqNo" /> -->
@@ -40,7 +40,7 @@ function subFTitleView($param)
               <td width="35%" align="center"><?php print $classNo; ?></td>
               <td width="45%"><?php print $name; ?></td>
               <td width="10%"><a href="javascript:form.act.value='fTitleItemSearch';form.sClassNo.value=<?php print $classNo; ?>;form.sDocNo.value=<?php print $docNo; ?>;form.submit();">詳細</a></td>
-              <td width="10%"><a href="javascript:form.act.value='fTitleEdit';form.docNo.value=<?php print $docNo; ?>;form.submit();">編集</a></td>
+              <td width="10%"><a href="javascript:form.act.value='fTitleEdit';form.DocNo.value=<?php print $docNo; ?>;form.submit();">編集</a></td>
             </tr>
         <?php
           }
@@ -67,7 +67,7 @@ function subFTitleItemView($param)
     <input type="hidden" name="sDocNo" value="<?php print $param["sDocNo"] ?>" /><!-- タイトルのdocNo -->
     <input type="hidden" name="orderBy" value="<?php print $param["orderBy"] ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"] ?>" />
-    <input type="hidden" name="docNo" /> <!-- 項目編集時に必要 -->
+    <input type="hidden" name="DocNo" /> <!-- 項目編集時に必要 -->
 
     <table border="0" cellpadding="4" cellspacing="1">
       <tr>
@@ -106,7 +106,7 @@ function subFTitleItemView($param)
             <tr>
               <td width="35%" align="center"><?php print $seqNo; ?></td>
               <td width="45%"><?php print $name; ?></td>
-              <td width="10%"><a href="javascript:form.act.value='fTitleItemEdit';form.docNo.value=<?php print $docNo; ?>;form.submit();">編集</a></td>
+              <td width="10%"><a href="javascript:form.act.value='fTitleItemEdit';form.DocNo.value=<?php print $docNo; ?>;form.submit();">編集</a></td>
             </tr>
         <?php
           }
@@ -133,7 +133,7 @@ function subFTitleEditView($param)
     <input type="hidden" name="act" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
     <input type="hidden" name="seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /><!-- タイトル編集時に必要 -->
-    <input type="hidden" name="docNo" value="<?php print $param["DocNo"] ?? ''; ?>" />
+    <input type="hidden" name="DocNo" value="<?php print $param["DocNo"] ?? ''; ?>" />
 
     <div class="list">
       <table border="0" cellpadding="5" cellspacing="1">
@@ -181,7 +181,9 @@ function subFTitleItemEditView($param)
     <input type="hidden" name="act" />
     <input type="hidden" name="sDocNo" value="<?php print $param["sDocNo"]; ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
-    <input type="hidden" name="docNo" value="<?php print $param["DocNo"]; ?>" />
+    <input type="hidden" name="DocNo" value="<?php print $param["DocNo"]; ?>" />
+    <!-- <input type="hidden" name="delete_seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /> -->
+    <!-- バリデーションバグ回避のためname属性変更 -->
 
     <div class="list">
       <table border="0" cellpadding="5" cellspacing="1">

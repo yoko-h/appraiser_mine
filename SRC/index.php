@@ -1,113 +1,114 @@
 <?php
 // ライブラリの呼出し
-require ('libDBInit.php');
-require ('libDBConnect.php');
-require ('libPage.php');
+require('libDBInit.php');
+require('libDBConnect.php');
+require('libPage.php');
 
 // ユーザ&メニュー
-require ('libAdminUser.php');
-require ('libLoginout.php');
-require ('libMenu.php');
+require('libAdminUser.php');
+require('libLoginout.php');
+require('libMenu.php');
 
 // 売主
-require ('class/sell/control.php');
+require('class/sell/control.php');
 
 // 仕入
-require ('class/stock/control.php');
+require('class/stock/control.php');
 
 // 物件
-require ('libArticle.php');
-require ('libDBArticle.php');
+require('libArticle.php');
+require('libDBArticle.php');
 
 // 工事
-require ('libConst.php');
-require ('libDBConst.php');
+require('libConst.php');
+require('libDBConst.php');
 
 // 業者
-require ('libTrade.php');
-require ('libDBTrade.php');
+require('libTrade.php');
+require('libDBTrade.php');
 
 // 案内
-require ('class/guide/control.php');
+require('class/guide/control.php');
 
 // ファイルマネージャー
-require ('libFManager.php');
-require ('libDBFManager.php');
+require('libFManager.php');
+require('libDBFManager.php');
 
 // タイトル変更
-require ('class/title/control.php');
+require('class/title/control.php');
 
 // 一覧表示件数
 define("PAGE_MAX", 100);
 
 // ログインチェック
 switch ($_REQUEST['act']) {
-    // ログインチェック
-    case 'loginCheck':
-        subLoginCheck();
-        break;
+  // ログインチェック
+  case 'loginCheck':
+    subLoginCheck();
+    break;
 
-    // ログアウト
-    case 'logout':
-        $_COOKIE['cUserNo'] = '';
-        $_COOKIE['authority'] = '';
-        break;
+  // ログアウト
+  case 'logout':
+    $_COOKIE['cUserNo'] = '';
+    $_COOKIE['authority'] = '';
+    break;
 }
 
 // クッキー情報の取得
 if ($_COOKIE['cUserNo'] != '' && $_COOKIE['authority'] != '') {
-    setcookie('cUserNo', $_COOKIE['cUserNo'], time() + 60 * 60 * 24 * 365);
-    setcookie('authority', $_COOKIE['authority'], time() + 60 * 60 * 24 * 365);
-    if (! $_REQUEST['act']) {
-        $_REQUEST['act'] = 'menu';
-    }
+  setcookie('cUserNo', $_COOKIE['cUserNo'], time() + 60 * 60 * 24 * 365);
+  setcookie('authority', $_COOKIE['authority'], time() + 60 * 60 * 24 * 365);
+  if (! $_REQUEST['act']) {
+    $_REQUEST['act'] = 'menu';
+  }
 } else {
-    setcookie('cUserNo', $_COOKIE['cUserNo'], time() - 1);
-    setcookie('authority', $_COOKIE['authority'], time() - 1);
-    $_REQUEST['act'] = '';
+  setcookie('cUserNo', $_COOKIE['cUserNo'], time() - 1);
+  setcookie('authority', $_COOKIE['authority'], time() - 1);
+  $_REQUEST['act'] = '';
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="./css/style.css" />
-<script type="text/javascript" src="./js/common.js"></script>
-<script type="text/javascript" src="./js/jkl-calendar.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="./css/style.css" />
+  <script type="text/javascript" src="./js/common.js"></script>
+  <script type="text/javascript" src="./js/jkl-calendar.js"></script>
 </head>
 
 <body>
 
-<?php
-switch ($_REQUEST['act']) {
+  <?php
+  switch ($_REQUEST['act']) {
 
     // ログイン
     case '':
     case 'reLogin':
-        subLogin();
-        break;
+      subLogin();
+      break;
 
     // ログイン後のメニュー表示
     case 'menu':
-        subMenu();
-        break;
+      subMenu();
+      break;
 
     // ユーザー情報
     case 'adminUser':
-        subAdminUser();
-        break;
+      subAdminUser();
+      break;
 
     case 'adminUserEdit':
-        subAdminUserEdit();
-        break;
+      subAdminUserEdit();
+      break;
 
     case 'adminUserEditComplete':
-        subAdminUserEditComplete();
-        break;
+      subAdminUserEditComplete();
+      break;
 
     case 'adminUserDelete':
-        subAdminUserDelete();
-        break;
+      subAdminUserDelete();
+      break;
 
     // 売主物件
     case 'sell':
@@ -115,8 +116,8 @@ switch ($_REQUEST['act']) {
     case 'sellEdit':
     case 'sellEditComplete':
     case 'sellDelete':
-        sell_control();
-        break;
+      sell_control();
+      break;
 
     // 仕入管理
     case 'stock':
@@ -125,58 +126,58 @@ switch ($_REQUEST['act']) {
     case 'stockEditComplete':
     case 'stockDelete':
     case 'stockListDelete':
-        stock_control();
-        break;
+      stock_control();
+      break;
 
     // 物件管理
     case 'article':
     case 'articleSearch':
-        subArticle();
-        break;
+      subArticle();
+      break;
 
     case 'articleEdit':
-        subArticleEdit();
-        break;
+      subArticleEdit();
+      break;
 
     case 'articleEditComplete':
-        subArticleEditComplete();
-        break;
+      subArticleEditComplete();
+      break;
 
     case 'articleDelete':
-        subArticleDelete();
-        break;
+      subArticleDelete();
+      break;
 
     // 工事管理表関連処理
     case 'const':
     case 'constSearch':
-        subConst();
-        break;
+      subConst();
+      break;
 
     case 'constEdit':
-        subConstEdit();
-        break;
+      subConstEdit();
+      break;
 
     case 'constEditComplete':
-        subConstEditComplete();
-        break;
+      subConstEditComplete();
+      break;
 
     // 業者一覧関連処理
     case 'trade':
     case 'tradeSearch':
-        subTrade();
-        break;
+      subTrade();
+      break;
 
     case 'tradeEdit':
-        subTradeEdit();
-        break;
+      subTradeEdit();
+      break;
 
     case 'tradeEditComplete':
-        subTradeEditComplete();
-        break;
+      subTradeEditComplete();
+      break;
 
     case 'tradeDelete':
-        subTradeDelete();
-        break;
+      subTradeDelete();
+      break;
 
     // 案内管理関連処理
     case 'guide':
@@ -188,42 +189,42 @@ switch ($_REQUEST['act']) {
     case 'guideEdit':
     case 'guideEditComplete':
     case 'guideDelete':
-        guide_control();
-        break;
+      guide_control();
+      break;
 
     // ファイルマネージャ関連処理
     case 'fManager':
     case 'fManagerSearch':
-        subFManager();
-        break;
+      subFManager();
+      break;
 
     case 'fManagerEdit':
-        subFManagerEdit();
-        break;
+      subFManagerEdit();
+      break;
 
     case 'fManagerEditComplete':
-        subFManagerEditComplete();
-        break;
+      subFManagerEditComplete();
+      break;
 
     case 'fManagerDelete':
-        subFManagerDelete();
-        break;
+      subFManagerDelete();
+      break;
 
     case 'fManagerView':
-        subFManagerView();
-        break;
+      subFManagerView();
+      break;
 
     case 'fManagerViewEdit':
-        subFManagerViewEdit();
-        break;
+      subFManagerViewEdit();
+      break;
 
     case 'fManagerViewEditComplete':
-        subFManagerViewEditComplete();
-        break;
+      subFManagerViewEditComplete();
+      break;
 
     case 'fManagerViewDelete':
-        subFManagerViewDelete();
-        break;
+      subFManagerViewDelete();
+      break;
 
     // タイトル管理関連処理
     case 'fTitle':
@@ -233,10 +234,11 @@ switch ($_REQUEST['act']) {
     case 'fTitleEditComplete':
     case 'fTitleDelete':
     case 'fTitleItemEdit':
-        Ftitle_control();
-        break;
-}
-?>
+      title_control();
+      break;
+  }
+  ?>
 
 </body>
+
 </html>
