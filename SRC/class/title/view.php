@@ -134,6 +134,10 @@ function subFTitleEditView($param)
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
     <input type="hidden" name="seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /><!-- タイトル編集時に必要 -->
     <input type="hidden" name="DocNo" value="<?php print $param["DocNo"] ?? ''; ?>" />
+    <input type="hidden" name="delete_classNo" value="<?php print $param["classNo"] ?? ''; ?>" />
+
+    <!-- <input type="hidden" name="delete_seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /> -->
+
 
     <div class="list">
       <table border="0" cellpadding="5" cellspacing="1">
@@ -159,7 +163,7 @@ function subFTitleEditView($param)
     <?php
     if ($param["DocNo"]) {
     ?>
-      <a href="javascript:fnFTitleDeleteCheck(no);"><img src="./images/btn_del.png" /></a>
+      <a href="javascript:fnFTitleDeleteCheck(<?php print $param["DocNo"]; ?>);"><img src="./images/btn_del.png" /></a>
     <?php
     }
 
@@ -182,8 +186,8 @@ function subFTitleItemEditView($param)
     <input type="hidden" name="sDocNo" value="<?php print $param["sDocNo"]; ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
     <input type="hidden" name="DocNo" value="<?php print $param["DocNo"]; ?>" />
-    <!-- <input type="hidden" name="delete_seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /> -->
-    <!-- バリデーションバグ回避のためname属性変更 -->
+    <input type="hidden" name="delete_seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /><!-- バリデーションバグ回避のためname属性変更 -->
+
 
     <div class="list">
       <table border="0" cellpadding="5" cellspacing="1">

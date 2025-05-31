@@ -82,6 +82,7 @@ function fnSqlFTitleInsert($param)
   $sql .= "DocNo, classNo, seqNo, name, INSDT, UPDT, DEL";
   $sql .= ") VALUES (";
   $sql .= "'" . $param["DocNo"] . "', '" . $param["classNo"] . "', '" . $param["seqNo"] . "', '" . $param["name"] . "',"
+    // $sql .= $param["DocNo"] . ", " . $param["classNo"] . ", " . $param["seqNo"] . ", '" . $param["name"] . "',"
     . "CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1)";
   return $sql;
 }
@@ -95,8 +96,8 @@ function fnSqlFTitleDelete($docNo)
   $sql = "UPDATE TBLDOC";
   $sql .= " SET DEL = -1,";
   $sql .= " UPDT = CURRENT_TIMESTAMP";
-  $sql .= " WHERE DOCNO = '$docNo'";
-  echo "<br>↓model:タイトル削除 fnSqlFTitleDelete($docNo)<br>";
+  $sql .= " WHERE DOCNO = $docNo";
+  echo "<br>↓model:削除 fnSqlFTitleDelete($docNo)<br>";
   var_dump($sql);
   return $sql;
 }
