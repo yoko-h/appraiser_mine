@@ -124,18 +124,18 @@ function subConst()
         $interiorPrice  = htmlspecialchars(fnNumFormat((int)$row["INTERIORPRICE"]));
         $constPrice     = htmlspecialchars(fnNumFormat((int)$row["CONSTPRICE"]));
         $constAdd       = htmlspecialchars($row["CONSTADD"]);
-        $purchaseDT     = htmlspecialchars($row["PURCHASEDT"]);
-        $workStartDT    = htmlspecialchars($row["WORKSTARTDT"]);
+        $purchaseDT     = htmlspecialchars(fnToFormYMD($row["PURCHASEDT"]));
+        $workStartDT    = htmlspecialchars(fnToFormYMD($row["WORKSTARTDT"]));
         $workEndDT      = htmlspecialchars($row["WORKENDDT"]);
         $receive        = htmlspecialchars($row["RECEIVE"]);
-        $lineOpenDT     = htmlspecialchars($row["LINEOPENDT"]);
-        $lineCloseDT    = htmlspecialchars($row["LINECLOSEDT"]);
+        $lineOpenDT     = htmlspecialchars(fnToFormYMD($row["LINEOPENDT"]));
+        $lineCloseDT    = htmlspecialchars(fnToFormYMD($row["LINECLOSEDT"]));
         $siteDT         = htmlspecialchars($row["SITEDT"]);
         $sellCharge     = htmlspecialchars($row["SELLCHARGE"]);
         $interiorCharge = htmlspecialchars($row["INTERIORCHARGE"]);
         $keyPlace       = htmlspecialchars($row["KEYPLACE"]);
-        $lineOpenContactDT = htmlspecialchars($row["LINEOPENCONTACTDT"]);
-        $lineCloseContactDT = htmlspecialchars($row["LINECLOSECONTACTDT"]);
+        $lineOpenContactDT = htmlspecialchars(fnToFormYMD($row["LINEOPENCONTACTDT"]));
+        $lineCloseContactDT = htmlspecialchars(fnToFormYMD($row["LINECLOSECONTACTDT"]));
         $lightOrder     = htmlspecialchars($row["LIGHTORDER"]);
       ?>
         <tr>
@@ -206,16 +206,19 @@ function subConstEdit()
     $constPrice     = htmlspecialchars($row["CONSTPRICE"]);
     $constAdd       = htmlspecialchars($row["CONSTADD"]);
     $constNote      = htmlspecialchars($row["CONSTNOTE"]);
-    $purchaseDT     = htmlspecialchars($row["PURCHASEDT"]);
-    $workStartDT    = htmlspecialchars($row["WORKSTARTDT"]);
-    $workEndDT      = htmlspecialchars($row["WORKENDDT"]);
-    $lineOpenDT     = htmlspecialchars($row["LINEOPENDT"]);
-    $lineCloseDT    = htmlspecialchars($row["LINECLOSEDT"]);
+    $purchaseDT     = htmlspecialchars(fnToFormYMD($row["PURCHASEDT"]));
+    $workStartDT    = htmlspecialchars(fnToFormYMD($row["WORKSTARTDT"]));
+    $workEndDT      = htmlspecialchars(fnToFormYMD($row["WORKENDDT"]));
+    $lineOpenDT     = htmlspecialchars(fnToFormYMD($row["LINEOPENDT"]));
+    $lineCloseDT    = htmlspecialchars(fnToFormYMD($row["LINECLOSEDT"]));
+
+
+
     $receive        = htmlspecialchars($row["RECEIVE"]);
     $hotWater       = htmlspecialchars($row["HOTWATER"]);
     $siteDT         = htmlspecialchars($row["SITEDT"]);
     $leavingForm    = htmlspecialchars($row["LEAVINGFORM"]);
-    $leavingDT      = htmlspecialchars($row["LEAVINGDT"]);
+    $leavingDT      = htmlspecialchars(fnToFormYMD($row["LEAVINGDT"]));
     $keyPlace       = htmlspecialchars($row["KEYPLACE"]);
     $manageCompany  = htmlspecialchars($row["MANAGECOMPANY"]);
     $floorPlan      = htmlspecialchars($row["FLOORPLAN"]);
@@ -228,14 +231,14 @@ function subConstEdit()
     $constFlg2      = htmlspecialchars($row["CONSTFLG2"]);
     $constFlg3      = htmlspecialchars($row["CONSTFLG3"]);
     $constFlg4      = htmlspecialchars($row["CONSTFLG4"]);
-    $lineOpenContactDT = htmlspecialchars($row["LINEOPENCONTACTDT"]);
-    $lineCloseContactDT = htmlspecialchars($row["LINECLOSECONTACTDT"]);
+    $lineOpenContactDT = htmlspecialchars(fnToFormYMD($row["LINEOPENCONTACTDT"]));
+    $lineCloseContactDT = htmlspecialchars(fnToFormYMD($row["LINECLOSECONTACTDT"]));
     $lineContactNote = htmlspecialchars($row["LINECONTACTNOTE"]);
     $electricityCharge = htmlspecialchars($row["ELECTRICITYCHARGE"]);
     $gasCharge      = htmlspecialchars($row["GASCHARGE"]);
     $lightOrder     = htmlspecialchars($row["LIGHTORDER"]);
 
-    $siteDate   = fnToFormYMD($siteDT);
+    $siteDate   = fnToFormYMD(substr($siteDT, 0, 10));
     $siteHour   = fnToFormH($siteDT);
     $siteMinute = fnToFormM($siteDT);
   }
@@ -443,7 +446,7 @@ function subConstEdit()
       </tr>
       <tr>
         <th>営業担当者</th>
-        <td><input type="text" name="sellCharge" value="<?php print $sellCharge ?>" /></td>
+        <td><?php print $sellCharge ?></td>
       </tr>
       <tr>
         <th>工事</th>
@@ -505,7 +508,7 @@ function subConstEditComplete()
   $receive        = mysqli_real_escape_string($conn, $_REQUEST['receive']);
   $hotWater       = mysqli_real_escape_string($conn, $_REQUEST['hotWater']);
   $siteDate       = $_REQUEST['siteDate'] ?? '';
-  $siteHour       = $_EQUEST['siteHour'] ?? '';
+  $siteHour       = $_REQUEST['siteHour'] ?? '';
   $siteMinute     = $_REQUEST['siteMinute'] ?? '';
   $siteDT         = ($siteDate !== '' && $siteHour !== '' && $siteMinute !== '') ? mysqli_real_escape_string($conn, fnToSqlYMDHM($siteDate, $siteHour, $siteMinute)) : null;
   $leavingForm    = mysqli_real_escape_string($conn, $_REQUEST['leavingForm']);
