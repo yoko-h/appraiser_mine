@@ -48,7 +48,6 @@ function subFTitleEdit()
 {
   $param = getFTitleParam();
   $param["DocNo"] = htmlspecialchars($_REQUEST['DocNo']);
-  // $param["seqNo"] = htmlspecialchars($_REQUEST['seqNo']);
 
   if ($param["DocNo"]) {  //編集対象のレコードの情報
     $sql = fnSqlFTitleEdit($param["DocNo"]);
@@ -68,11 +67,7 @@ function subFTitleEdit()
   }
 
   subMenu();
-  // if ($param["sDocNo"]) {
-  //   subFTitleItemEditView($param);
-  // } else {
   subFTitleEditView($param);
-  // }
 }
 
 
@@ -134,7 +129,6 @@ function subFTitleEditComplete()
   $sqlBefore = fnSqlFTitleEdit($param["DocNo"]);
   $resBefore = mysqli_query($param["conn"], $sqlBefore);
   $rowBefore = mysqli_fetch_array($resBefore);
-  var_dump($rowBefore);
   $beforeClassNo = htmlspecialchars($rowBefore['CLASSNO'] ?? '');
   $beforeName = htmlspecialchars($rowBefore['NAME'] ?? '');
 
@@ -142,13 +136,7 @@ function subFTitleEditComplete()
   $ErrClassNo = subFTitleRepetition($param["classNo"], $param["DocNo"], $param["seqNo"], false); //タイトル登録で使う
 
   if ($param["DocNo"]) { //更新コード
-    // 更新前の情報を取得
-    // $sqlBefore = fnSqlFTitleEdit($param["DocNo"]);
-    // $resBefore = mysqli_query($param["conn"], $sqlBefore);
-    // $rowBefore = mysqli_fetch_array($resBefore);
-    // var_dump($rowBefore);
-    // $beforeClassNo = htmlspecialchars($rowBefore['CLASSNO'] ?? '');
-    // $beforeName = htmlspecialchars($rowBefore['NAME'] ?? '');
+
     if ($param["seqNo"] == 0 && !$haveParent || $param["seqNo"] == '') { //---タイトル更新
       $haveParent = false; // タイトル更新時は親要素
       // ★ 変更がないかチェック
@@ -249,22 +237,37 @@ function subTitlePage1()
 //
 function subFTitleDelete($classNo, $docNo, $seqNo)
 {
-  $param = getFTitleParam();
+  $conn = fnDbConnect();
 
-  if ($param["seqNo"] == 0) { // タイトル削除
-    $sqlToDelete = fnSqlFTitleDelete($docNo);
-    echo "<br>削除クエリ (親：タイトル)<br>";
-    $resToDelete = mysqli_query($param["conn"], $sqlToDelete);
+  $docToDelete = $_REQUEST['docNoToDelete'] ?? '';
+  $classNoToDelete = $_REQUEST['delete_classNo'] ?? '';
+  $seqNoToDelete = $_REQUEST['delete_seqNo'] ?? '';
+
+  if ($classNoToDelete !== '') { // タイトル削除
+    // 1. 親要素の情報から子項目を抽出
+    $sqlChildren = fnSqlFTitleItemList($classNoToDelete);
+    $resChildren = mysqli_query($conn, $sqlChildren);
+    // 2. 抽出した子要素をそれぞれ論理削除
+    while ($rowChild = mysqli_fetch_array($resChildren)) {
+      $childDocNo = $rowChild['DOCNO'];
+      $sqlDeleteChild = fnSqlFTitleDelete($childDocNo);
+      $resDeleteChild = mysqli_query($conn, $sqlDeleteChild);
+      if (!$resDeleteChild) {
+      }
+    }
+    // 3. 親要素（タイトル）自身を論理削除
+    $sqlDeleteParent = fnSqlFTitleDelete($docToDelete);
+    $resDeleteParent = mysqli_query($conn, $sqlDeleteParent);
 
     $_REQUEST['act'] = 'fTitleSearch';
-    subFTitle(); // タイトル一覧へ遷移
-  } else {                       // 項目削除
-    $sqlToDelete = fnSqlFTitleDelete($docNo);
-    echo "<br>削除クエリ (子：項目)<br>";
-    $resToDelete = mysqli_query($param["conn"], $sqlToDelete);
-
+    subFTitle();
+  } elseif ($seqNoToDelete !== '') { // 項目削除
+    $sqlToDelete = fnSqlFTitleDelete($docToDelete);
+    $resToDelete = mysqli_query($conn, $sqlToDelete);
     $_REQUEST['act'] = 'fTitleItemSearch';
-    subFTitleItem(); // 項目一覧へ遷移
+    subFTitleItem();
+  } else {
+    echo "エラー：削除する情報が不足しています。";
   }
 }
 

@@ -49,9 +49,17 @@ function fnFTitleEditCheck(zero) {
 //
 //削除
 //
-function fnFTitleDeleteCheck(no) {
+//
+//削除
+//
+function fnFTitleDeleteCheck(type, docNo, extraValue) {
   if (confirm('削除します。よろしいですか？')) {
-    form.DocNo.value = no;
+    form.docNoToDelete.value = docNo;
+    if (type === 'title') {
+      form.delete_classNo.value = extraValue;
+    } else if (type === 'item') {
+      form.delete_seqNo.value = extraValue;
+    }
     form.act.value = 'fTitleDelete';
     form.submit();
   }

@@ -92,13 +92,10 @@ function fnSqlFTitleInsert($param)
 //
 function fnSqlFTitleDelete($docNo)
 {
-  echo "<br>削除クエリ<br>";
   $sql = "UPDATE TBLDOC";
   $sql .= " SET DEL = -1,";
   $sql .= " UPDT = CURRENT_TIMESTAMP";
   $sql .= " WHERE DOCNO = $docNo";
-  echo "<br>↓model:削除 fnSqlFTitleDelete($docNo)<br>";
-  var_dump($sql);
   return $sql;
 }
 

@@ -134,10 +134,8 @@ function subFTitleEditView($param)
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
     <input type="hidden" name="seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /><!-- タイトル編集時に必要 -->
     <input type="hidden" name="DocNo" value="<?php print $param["DocNo"] ?? ''; ?>" />
-    <input type="hidden" name="delete_classNo" value="<?php print $param["classNo"] ?? ''; ?>" />
-
-    <!-- <input type="hidden" name="delete_seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /> -->
-
+    <input type="hidden" name="docNoToDelete" value="" />
+    <input type="hidden" name="delete_classNo" value="" />
 
     <div class="list">
       <table border="0" cellpadding="5" cellspacing="1">
@@ -161,9 +159,9 @@ function subFTitleEditView($param)
     <a href="javascript:fnFTitleEditCheck(0);"><img src="./images/<?php print $param["btnImage"]; ?>" /></a>
     <a href="javascript:form.act.value='fTitleSearch';form.submit();"><img src="./images/btn_return.png" /></a>
     <?php
-    if ($param["DocNo"]) {
+    if ($param["DocNo"] && $param["seqNo"] == 0) {
     ?>
-      <a href="javascript:fnFTitleDeleteCheck(<?php print $param["DocNo"]; ?>);"><img src="./images/btn_del.png" /></a>
+      <a href="javascript:fnFTitleDeleteCheck('title', '<?php print $param["DocNo"]; ?>', '<?php print $param["classNo"] ?? ''; ?>');"><img src="./images/btn_del.png" /></a>
     <?php
     }
 
@@ -186,8 +184,8 @@ function subFTitleItemEditView($param)
     <input type="hidden" name="sDocNo" value="<?php print $param["sDocNo"]; ?>" />
     <input type="hidden" name="orderTo" value="<?php print $param["orderTo"]; ?>" />
     <input type="hidden" name="DocNo" value="<?php print $param["DocNo"]; ?>" />
-    <input type="hidden" name="delete_seqNo" value="<?php print $param["seqNo"] ?? ''; ?>" /><!-- バリデーションバグ回避のためname属性変更 -->
-
+    <input type="hidden" name="docNoToDelete" value="" />
+    <input type="hidden" name="delete_seqNo" value="" />
 
     <div class="list">
       <table border="0" cellpadding="5" cellspacing="1">
@@ -224,9 +222,9 @@ function subFTitleItemEditView($param)
     <a href="javascript:fnFTitleEditCheck();"><img src="./images/<?php print $param["btnImage"]; ?>" /></a>
     <a href="javascript:form.act.value='fTitleItemSearch';form.submit();"><img src="./images/btn_return.png" /></a>
     <?php
-    if ($param["DocNo"]) {
+    if ($param["DocNo"] && $param["seqNo"] > 0) {
     ?>
-      <a href="javascript:fnFTitleDeleteCheck(<?php print $param["DocNo"]; ?>);"><img src="./images/btn_del.png" /></a>
+      <a href="javascript:fnFTitleDeleteCheck('item', '<?php print $param["DocNo"]; ?>', '<?php print $param["seqNo"] ?? ''; ?>');"><img src="./images/btn_del.png" /></a>
     <?php
     }
     ?>
