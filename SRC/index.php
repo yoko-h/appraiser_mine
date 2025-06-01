@@ -41,7 +41,7 @@ require('class/title/control.php');
 define("PAGE_MAX", 100);
 
 // ログインチェック
-switch ($_REQUEST['act']) {
+switch ($_REQUEST['act'] ?? '') {
   // ログインチェック
   case 'loginCheck':
     subLoginCheck();
@@ -58,7 +58,7 @@ switch ($_REQUEST['act']) {
 if ($_COOKIE['cUserNo'] != '' && $_COOKIE['authority'] != '') {
   setcookie('cUserNo', $_COOKIE['cUserNo'], time() + 60 * 60 * 24 * 365);
   setcookie('authority', $_COOKIE['authority'], time() + 60 * 60 * 24 * 365);
-  if (! $_REQUEST['act']) {
+  if (! $_REQUEST['act'] ?? '') {
     $_REQUEST['act'] = 'menu';
   }
 } else {
