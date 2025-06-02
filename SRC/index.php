@@ -55,15 +55,19 @@ switch ($_REQUEST['act'] ?? '') {
 }
 
 // クッキー情報の取得
-if ($_COOKIE['cUserNo'] != '' && $_COOKIE['authority'] != '') {
+if (isset($_COOKIE['cUserNo']) && $_COOKIE['cUserNo'] != '' && isset($_COOKIE['authority']) && $_COOKIE['authority'] != '') {
   setcookie('cUserNo', $_COOKIE['cUserNo'], time() + 60 * 60 * 24 * 365);
   setcookie('authority', $_COOKIE['authority'], time() + 60 * 60 * 24 * 365);
   if (! $_REQUEST['act'] ?? '') {
     $_REQUEST['act'] = 'menu';
   }
 } else {
-  setcookie('cUserNo', $_COOKIE['cUserNo'], time() - 1);
-  setcookie('authority', $_COOKIE['authority'], time() - 1);
+  if (isset($_COOKIE['cUserNo'])) {
+    setcookie('cUserNo', $_COOKIE['cUserNo'], time() - 1);
+  }
+  if (isset($_COOKIE['authority'])) {
+    setcookie('authority', $_COOKIE['authority'], time() - 1);
+  }
   $_REQUEST['act'] = '';
 }
 ?>
