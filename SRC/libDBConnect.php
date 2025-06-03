@@ -43,11 +43,11 @@ function fnSqlAdminUserEdit($userNo)
 function fnSqlAdminUserUpdate($userNo, $name, $id, $password, $authority)
 {
   // $pass = addslashes(hash('adler32', $password));
-  $pass = password_hash($password, PASSWORD_DEFAULT);
+  $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
   $sql = "UPDATE TBLUSER";
   $sql .= " SET NAME = '$name'";
   $sql .= ",ID = '$id'";
-  $sql .= ",PASSWORD = '$pass'";
+  $sql .= ",PASSWORD = '$hashedPassword'";
   $sql .= ",AUTHORITY = '$authority'";
   $sql .= ",UPDT = CURRENT_TIMESTAMP";
   $sql .= " WHERE USERNO = '$userNo'";
@@ -61,11 +61,11 @@ function fnSqlAdminUserUpdate($userNo, $name, $id, $password, $authority)
 function fnSqlAdminUserInsert($userNo, $name, $id, $password, $authority)
 {
   // $pass = addslashes(hash('adler32', $password));
-  $pass = password_hash($password, PASSWORD_DEFAULT);
+  $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
   $sql = "INSERT INTO TBLUSER(";
   $sql .= "USERNO,NAME,ID,PASSWORD,AUTHORITY,INSDT,UPDT,DEL";
   $sql .= ")VALUES(";
-  $sql .= "'$userNo','$name','$id','$pass','$authority',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1)";
+  $sql .= "'$userNo','$name','$id','$hashedPassword','$authority',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,1)";
 
   return ($sql);
 }
