@@ -1,16 +1,4 @@
 <?php
-// パスワードの最初の1文字を表示し、残りを隠蔽する関数
-function maskPasswordFirstOnly($hashedPassword)
-{
-  if (empty($hashedPassword)) {
-    return '';
-  }
-  $length = strlen($hashedPassword);
-  $firstChar = $hashedPassword[0];
-  $maskedPart = str_repeat('●', $length - 1);
-  return $firstChar . $maskedPart;
-}
-
 //
 //ユーザー情報画面
 //
@@ -46,14 +34,12 @@ function subAdminUser()
           $userNo    = htmlspecialchars($row[0]);
           $name      = htmlspecialchars($row[1]);
           $id        = htmlspecialchars($row[2]);
-          $hashedPassword  = htmlspecialchars($row[3]); // ハッシュ化されたパスワードを取得
           $authority = htmlspecialchars($row[4]);
-          $maskedPassword = maskPasswordFirstOnly($hashedPassword); // 表示用に加工
         ?>
           <tr>
             <td class="list_td<?php print $i; ?>"><a href="javascript:form.act.value='adminUserEdit';form.userNo.value=<?php print $userNo; ?>;form.submit();"><?php print $name; ?></a></td>
             <td class="list_td<?php print $i; ?>"><?php print $id; ?></td>
-            <td class="list_td<?php print $i; ?>"><?php print $maskedPassword; ?></td>
+            <td class="list_td<?php print $i; ?>"><a href="javascript:form.act.value='adminUserEdit';form.userNo.value=<?php print $userNo; ?>;form.submit();">再設定</a></td>
             <td class="list_td<?php print $i; ?>"><?php print fnAuthorityName($authority); ?></td>
             <td class="list_td<?php print $i; ?>">
               <a href="javascript:fnAdminUserDeleteCheck(<?php print $userNo; ?>,'<?php print $name; ?>');">削除</a>
@@ -121,7 +107,7 @@ function subAdminUserEdit()
       </tr>
       <tr>
         <th>PASS</th>
-        <td><input type="text" name="password" value="<?php print $password; ?>" /></td>
+        <td><input type="text" name="password" value="" /></td>
       </tr>
       <tr>
         <th>所属</th>
