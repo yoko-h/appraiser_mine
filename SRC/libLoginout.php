@@ -19,11 +19,11 @@ function subLogin()
       <table border="0" cellpadding="2" cellspacing="0">
         <tr>
           <th>ユーザーID</th>
-          <td><input type="text" name="id" style="ime-mode:disabled;" /></td>
+          <td><input type="text" name="id" style="ime-mode:disabled;" autocomplete="off" /></td>
         </tr>
         <tr>
           <th>パスワード</th>
-          <td><input type="password" name="pw" /></td>
+          <td><input type="password" name="pw" autocomplete="new-password" /></td>
         </tr>
       </table>
     </div>
