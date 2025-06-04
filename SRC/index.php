@@ -49,21 +49,32 @@ switch ($_REQUEST['act'] ?? '') {
 
   // ログアウト
   case 'logout':
-    $_COOKIE['cUserNo'] = '';
-    $_COOKIE['authority'] = '';
+    // $_COOKIE['cUserNo'] = '';
+    setcookie('cUserNo', '', time() - 3600, '/');
+    // $_COOKIE['authority'] = '';
+    setcookie('authority', '', time() - 3600, '/');
+    header('Location: index.php?act='); // またはログイン画面のURL
+    exit();
     break;
 }
 
 // クッキー情報の取得
-if ($_COOKIE['cUserNo'] != '' && $_COOKIE['authority'] != '') {
-  setcookie('cUserNo', $_COOKIE['cUserNo'], time() + 60 * 60 * 24 * 365);
-  setcookie('authority', $_COOKIE['authority'], time() + 60 * 60 * 24 * 365);
-  if (! $_REQUEST['act'] ?? '') {
+if (isset($_COOKIE['cUserNo']) && $_COOKIE['cUserNo'] != '' && isset($_COOKIE['authority']) && $_COOKIE['authority'] != '') {
+  setcookie('cUserNo', $_COOKIE['cUserNo'], time() + 60 * 60 * 24 * 365, '/');
+  setcookie('authority', $_COOKIE['authority'], time() + 60 * 60 * 24 * 365, '/');
+  // if (! $_REQUEST['act'] ?? '') {
+  if (!isset($_REQUEST['act']) || $_REQUEST['act'] === '') {
     $_REQUEST['act'] = 'menu';
   }
 } else {
-  setcookie('cUserNo', $_COOKIE['cUserNo'], time() - 1);
-  setcookie('authority', $_COOKIE['authority'], time() - 1);
+  if (isset($_COOKIE['cUserNo'])) {
+    // setcookie('cUserNo', $_COOKIE['cUserNo'], time() - 1);
+    setcookie('cUserNo', '', time() - 3600, '/'); // 値を空にし、過去の時刻で期限切れ
+  }
+  if (isset($_COOKIE['authority'])) {
+    // setcookie('authority', $_COOKIE['authority'], time() - 1);
+    setcookie('authority', '', time() - 3600, '/'); // 値を空にし、過去の時刻で期限切れ
+  }
   $_REQUEST['act'] = '';
 }
 ?>
